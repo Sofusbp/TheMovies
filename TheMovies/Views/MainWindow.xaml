@@ -1,0 +1,32 @@
+﻿<Window x:Class="TheMovies.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TheMovies"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <StackPanel>
+            <TextBlock TextWrapping="Wrap" Text="Titel: "/>
+            <TextBox Text="{Binding Titel}"/>
+            <TextBlock TextWrapping="Wrap" Text="Varighed i min.: "/>
+            <TextBox Text="{Binding Varighed}"/>
+            <TextBlock TextWrapping="Wrap" Text="Genre: "/>
+            <TextBox Text="{Binding Genre}"/>
+        </StackPanel>
+        <Button Content="Registrer" Command="{Binding RegistrerCommand}" HorizontalAlignment="Center" Margin="0,118,0,0" VerticalAlignment="Top" Height="39" Width="102"/>
+        <ListBox Height="106" ItemsSource="{Binding MovieList}" Margin="0,140,669,188">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                <StackPanel>
+                    <TextBlock Text="{Binding Titel}"/>
+                    <TextBlock Text="{Binding Varighed}"/>
+                    <TextBlock Text="{Binding Genre}"/>
+                    </StackPanel>
+                    </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBox Text="Registreret film:" Margin="0,116,706,294"/>
+    </Grid>
+</Window>
