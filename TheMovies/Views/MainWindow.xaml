@@ -9,24 +9,94 @@
     <Grid>
         <StackPanel>
             <TextBlock TextWrapping="Wrap" Text="Titel: "/>
-            <TextBox Text="{Binding Titel}"/>
+
+            <Grid>
+                <TextBox Text="{Binding Titel, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="{Binding FejlTitel}"
+               Foreground="Red"
+               IsHitTestVisible="False"
+               VerticalAlignment="Center"
+               Margin="5,0,5,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding FejlTitel}" Value="Titel må ikke være tom">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
             <TextBlock TextWrapping="Wrap" Text="Varighed i min.: "/>
-            <TextBox Text="{Binding Varighed}"/>
-            <TextBlock TextWrapping="Wrap" Text="Genre: "/>
-            <TextBox Text="{Binding Genre}"/>
-        </StackPanel>
+            <Grid>
+                <TextBox Text="{Binding VarighedInput, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <TextBlock Text="{Binding FejlVarighed}"
+               Foreground="Red"
+               IsHitTestVisible="False"
+               VerticalAlignment="Center"
+               Margin="5,0,5,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding FejlVarighed}" Value="Varighed må ikke være tom">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding FejlVarighed}" Value="Varighed skal være et tal">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+
+                                <DataTrigger Binding="{Binding FejlVarighed}" Value="Varighed skal være større end 0">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+    <TextBlock TextWrapping="Wrap" Text="Genre: "/>
+
+    <Grid>
+        <TextBox Text="{Binding Genre, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Text="{Binding FejlGenre}"
+               Foreground="Red"
+               IsHitTestVisible="False"
+               VerticalAlignment="Center"
+               Margin="5,0,5,0">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding FejlGenre}" Value="Genre må ikke være tom">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+    </Grid>
+    </StackPanel>
         <Button Content="Registrer" Command="{Binding RegistrerCommand}" HorizontalAlignment="Center" Margin="0,118,0,0" VerticalAlignment="Top" Height="39" Width="102"/>
-        <ListBox Height="106" ItemsSource="{Binding MovieList}" Margin="0,140,669,188">
+        <ListBox Height="106" ItemsSource="{Binding MovieList}" SelectedItem="{Binding SelectedMovie}" Margin="0,140,669,188">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                <StackPanel>
-                    <TextBlock Text="{Binding Titel}"/>
-                    <TextBlock Text="{Binding Varighed}"/>
-                    <TextBlock Text="{Binding Genre}"/>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Titel}"/>
+                        <TextBlock Text="{Binding Varighed}"/>
+                        <TextBlock Text="{Binding Genre}"/>
                     </StackPanel>
-                    </DataTemplate>
+                </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <TextBox Text="Registreret film:" Margin="0,116,706,294"/>
+        <Button Content="Slet" Command="{Binding SletCommand}" HorizontalAlignment="Center" Margin="0,173,0,0" VerticalAlignment="Top" Width="102" Height="38"/>
     </Grid>
 </Window>

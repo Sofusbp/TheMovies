@@ -17,7 +17,7 @@ namespace TheMovies.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MovieViewModel("", 0, "");
+            DataContext = new MovieViewModel();
         }
 
     }
