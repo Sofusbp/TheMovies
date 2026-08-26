@@ -27,6 +27,8 @@ namespace TheMovies.ViewModels
         private string _fejlTitel;
         private string _fejlVarighed;
         private string _fejlGenre;
+        private string _instruktøer;
+        private DateTime _premieredato;
 
 
         public string Titel
@@ -100,11 +102,37 @@ namespace TheMovies.ViewModels
             }
         }
 
+        public string Instruktøer
+        {
+            get { return _instruktøer; }
+            set
+            {
+                _instruktøer = value;
+
+                PropertyChanged?.Invoke(this,
+                    new PropertyChangedEventArgs("Instruktøer"));
+            }
+        }
+
+        public DateTime Premieredato
+        {
+            get { return _premieredato; }
+            set
+            {
+                _premieredato = value;
+
+                PropertyChanged?.Invoke(this,
+                    new PropertyChangedEventArgs("Premieredato"));
+            }
+        }
+
 
         ObservableCollection<Movie> _movieList = new ObservableCollection<Movie>();
 
         public MovieViewModel()
         {
+            _premieredato = DateTime.Today;
+
             _repository = new FileMovieRepository();
 
             foreach (var movie in _repository.LoadMovies())
@@ -196,6 +224,8 @@ namespace TheMovies.ViewModels
             movie.Titel = Titel;
             movie.Varighed = varighed;
             movie.Genre = Genre;
+            movie.Instruktøer = Instruktøer;
+            movie.Premieredato = Premieredato;
 
             _movieList.Add(movie);
 

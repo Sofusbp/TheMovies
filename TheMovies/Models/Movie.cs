@@ -12,5 +12,9 @@ namespace TheMovies.Models
         {  get; set; }
         public string Genre
         {  get; set; }
+        public string Instruktøer
+        { get; set; }
+        public DateTime Premieredato
+        {  get; set; }
     }
 }
