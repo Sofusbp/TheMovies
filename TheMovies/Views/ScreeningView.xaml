@@ -66,8 +66,11 @@
             <TextBlock Text="Registrerede forestillinger"
                        Style="{StaticResource SectionTitleStyle}"/>
 
+            <TextBox Text="{Binding SoegeTekst, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Søg efter film eller biograf"/>
 
-            <DataGrid ItemsSource="{Binding ScreeningList}"
+
+            <DataGrid ItemsSource="{Binding ScreeningView}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
                       CanUserAddRows="False"

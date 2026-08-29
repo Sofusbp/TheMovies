@@ -25,6 +25,7 @@ namespace TheMovies.ViewModels
         private string _telefonnummer;
         private string _fejlbesked;
         private string _succesbesked = "";
+        private string _soegeTekst = "";
 
         public ReservationViewModel()
             : this(new FileReservationRepository())
@@ -39,6 +40,9 @@ namespace TheMovies.ViewModels
 
             _reservationList = new ObservableCollection<Reservation>(
                 _reservationRepository.LoadReservations());
+
+            ReservationView = System.Windows.Data.CollectionViewSource.GetDefaultView(_reservationList);
+            ReservationView.Filter = FiltrerReservationer;
 
             _screeningList = new ObservableCollection<Screening>(
                 _screeningRepository.LoadScreenings());
@@ -127,6 +131,22 @@ namespace TheMovies.ViewModels
                     this,
                     new PropertyChangedEventArgs("Fejlbesked"));
             }
+        }
+        public System.ComponentModel.ICollectionView ReservationView { get; }
+
+        public string SoegeTekst
+        {
+            get { return _soegeTekst; }
+            set { _soegeTekst = value; ReservationView.Refresh(); PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SoegeTekst")); }
+        }
+
+        private bool FiltrerReservationer(object item)
+        {
+            Reservation reservation = (Reservation)item;
+            return string.IsNullOrWhiteSpace(SoegeTekst) ||
+                   reservation.Forestilling.Film.Titel.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase) ||
+                   reservation.Email.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase) ||
+                   reservation.Telefonnummer.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase);
         }
 
         public string Succesbesked

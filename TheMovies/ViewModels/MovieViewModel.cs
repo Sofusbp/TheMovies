@@ -29,6 +29,7 @@ namespace TheMovies.ViewModels
         private string _fejlGenre;
         private string _instruktøer;
         private string _succesbesked = "";
+        private string _soegeTekst = "";
         private DateTime _premieredato;
 
 
@@ -141,6 +142,9 @@ namespace TheMovies.ViewModels
                 _movieList.Add(movie);
             }
 
+            MovieView = System.Windows.Data.CollectionViewSource.GetDefaultView(_movieList);
+            MovieView.Filter = FiltrerFilm;
+
             RegistrerCommand = new RelayCommand(
                 parameter => RegistrerFilm(),
                 parameter => KanRegistrereFilm());
@@ -151,6 +155,21 @@ namespace TheMovies.ViewModels
 
 
         public ObservableCollection<Movie> MovieList { get { return _movieList; } }
+        public System.ComponentModel.ICollectionView MovieView { get; }
+
+        public string SoegeTekst
+        {
+            get { return _soegeTekst; }
+            set { _soegeTekst = value; MovieView.Refresh(); PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SoegeTekst")); }
+        }
+
+        private bool FiltrerFilm(object item)
+        {
+            Movie movie = (Movie)item;
+            return string.IsNullOrWhiteSpace(SoegeTekst) ||
+                   movie.Titel.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase) ||
+                   movie.Genre.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase);
+        }
 
         public Movie SelectedMovie
         { 

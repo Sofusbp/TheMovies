@@ -167,7 +167,10 @@
             <TextBlock Text="Registrerede film"
                        Style="{StaticResource SectionTitleStyle}"/>
 
-            <DataGrid ItemsSource="{Binding MovieList}"
+            <TextBox Text="{Binding SoegeTekst, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Søg efter titel eller genre"/>
+
+            <DataGrid ItemsSource="{Binding MovieView}"
                       SelectedItem="{Binding SelectedMovie}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"

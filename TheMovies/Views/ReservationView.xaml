@@ -78,7 +78,10 @@
             <TextBlock Text="Registrerede reservationer"
                        Style="{StaticResource SectionTitleStyle}"/>
 
-            <DataGrid ItemsSource="{Binding ReservationList}"
+            <TextBox Text="{Binding SoegeTekst, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Søg efter film, email eller telefon"/>
+
+            <DataGrid ItemsSource="{Binding ReservationView}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
                       CanUserAddRows="False"

@@ -33,6 +33,7 @@ namespace TheMovies.ViewModels
         private string _beregnetSluttid = "";
         private string _fejlbesked = "";
         private string _succesbesked = "";
+        private string _soegeTekst = "";
 
         public ScreeningViewModel()
         {
@@ -43,6 +44,9 @@ namespace TheMovies.ViewModels
             _screeningList = new ObservableCollection<Screening>(
             _repository.LoadScreenings()
             .OrderBy(screening => screening.StartTidspunkt));
+
+            ScreeningView = System.Windows.Data.CollectionViewSource.GetDefaultView(_screeningList);
+            ScreeningView.Filter = FiltrerForestillinger;
 
             _movieList = new ObservableCollection<Movie>(
                 _movieRepository.LoadMovies());
@@ -160,6 +164,21 @@ namespace TheMovies.ViewModels
                     this,
                     new PropertyChangedEventArgs("StartTidspunkt"));
             }
+        }
+        public System.ComponentModel.ICollectionView ScreeningView { get; }
+
+        public string SoegeTekst
+        {
+            get { return _soegeTekst; }
+            set { _soegeTekst = value; ScreeningView.Refresh(); PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SoegeTekst")); }
+        }
+
+        private bool FiltrerForestillinger(object item)
+        {
+            Screening screening = (Screening)item;
+            return string.IsNullOrWhiteSpace(SoegeTekst) ||
+                   screening.Film.Titel.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase) ||
+                   screening.Biograf.Navn.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase);
         }
 
         public DateTime Dato
