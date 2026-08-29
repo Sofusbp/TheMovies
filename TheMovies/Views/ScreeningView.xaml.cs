@@ -9,17 +9,19 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TheMovies.ViewModels;
 
 namespace TheMovies.Views
 {
     /// <summary>
     /// Interaction logic for ScreeningView.xaml
     /// </summary>
-    public partial class ScreeningView : Window
+    public partial class ScreeningView : UserControl
     {
         public ScreeningView()
         {
             InitializeComponent();
+            DataContext = new ScreeningViewModel();
         }
     }
 }

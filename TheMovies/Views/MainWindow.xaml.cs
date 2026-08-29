@@ -20,24 +20,5 @@ namespace TheMovies.Views
             DataContext = new MovieViewModel();
         }
 
-        private void ÅbnBiografer(object sender, RoutedEventArgs e)
-        {
-            CinemaView cinemaView = new CinemaView();
-            cinemaView.Show();
-        }
-
-        private void ÅbnForestillinger(object sender, RoutedEventArgs e)
-        {
-            ScreeningView screeningView = new ScreeningView();
-            screeningView.DataContext = new ScreeningViewModel();
-            screeningView.Show();
-        }
-
-        private void ÅbnReservationer(object sender, RoutedEventArgs e)
-        {
-            ReservationView reservationView = new ReservationView();
-            reservationView.Show();
-        }
-
     }
 }

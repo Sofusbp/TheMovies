@@ -1,9 +1,10 @@
 using System.Windows;
+using System.Windows.Controls;
 using TheMovies.ViewModels;
 
 namespace TheMovies.Views
 {
-    public partial class ReservationView : Window
+    public partial class ReservationView : UserControl
     {
         public ReservationView()
         {

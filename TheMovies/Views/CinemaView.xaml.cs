@@ -13,7 +13,7 @@ using TheMovies.ViewModels;
 
 namespace TheMovies.Views
 {
-    public partial class CinemaView : Window
+    public partial class CinemaView : UserControl
     {
         public CinemaView()
         {

@@ -4,10 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TheMovies"
+        xmlns:views="clr-namespace:TheMovies.Views"
         mc:Ignorable="d"
-        Title="MainWindow"
-        Height="600"
-        Width="800">
+        Title="The Movies"
+        Height="720"
+        Width="1000"
+        MinHeight="600"
+        MinWidth="850">
+
+    <TabControl>
+
+        <TabItem Header="Film">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
 
@@ -147,30 +154,6 @@
                     HorizontalAlignment="Center"
                     Margin="0,15,0,15"/>
             
-            <!-- Biografer -->
-            <Button Content="Biografer"
-                    Click="ÅbnBiografer"
-                    Height="39"
-                    Width="102"
-                    HorizontalAlignment="Center"
-                    Margin="0,0,0,15"/>
-
-            <!-- Forestillinger -->
-            <Button Content="Forestillinger"
-                    Click="ÅbnForestillinger"
-                    Height="39"
-                    Width="130"
-                    HorizontalAlignment="Center"
-                    Margin="0,0,0,15"/>
-
-            <!-- Reservationer -->
-            <Button Content="Reservationer"
-                    Click="ÅbnReservationer"
-                    Height="39"
-                    Width="130"
-                    HorizontalAlignment="Center"
-                    Margin="0,0,0,15"/>
-
             <!-- Liste -->
             <TextBlock Text="Registrerede film:"
                        FontWeight="Bold"
@@ -217,5 +200,21 @@
         </StackPanel>
 
     </ScrollViewer>
+
+        </TabItem>
+
+        <TabItem Header="Biografer og sale">
+            <views:CinemaView/>
+        </TabItem>
+
+        <TabItem Header="Forestillinger">
+            <views:ScreeningView/>
+        </TabItem>
+
+        <TabItem Header="Reservationer">
+            <views:ReservationView/>
+        </TabItem>
+
+    </TabControl>
 
 </Window>
