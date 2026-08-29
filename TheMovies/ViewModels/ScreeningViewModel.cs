@@ -36,7 +36,8 @@ namespace TheMovies.ViewModels
             _cinemaRepository = new FileCinemaRepository();
 
             _screeningList = new ObservableCollection<Screening>(
-                _repository.LoadScreenings());
+            _repository.LoadScreenings()
+            .OrderBy(screening => screening.StartTidspunkt));
 
             _movieList = new ObservableCollection<Movie>(
                 _movieRepository.LoadMovies());
@@ -168,22 +169,41 @@ namespace TheMovies.ViewModels
                 return;
             }
 
-
             DateTime slutTidspunkt = StartTidspunkt
                 .AddMinutes(SelectedMovie.Varighed)
                 .AddMinutes(15)
                 .AddMinutes(15);
 
+            bool overlap = _screeningList.Any(screening =>
+                screening.Sal.Nummer == SelectedRoom.Nummer &&
+                StartTidspunkt < screening.SlutTidspunkt &&
+                slutTidspunkt > screening.StartTidspunkt);
+
+            if (overlap)
+            {
+                return;
+            }
 
             Screening screening = new Screening();
 
             screening.Film = SelectedMovie;
+            screening.Biograf = SelectedCinema;
             screening.Sal = SelectedRoom;
             screening.StartTidspunkt = StartTidspunkt;
             screening.SlutTidspunkt = slutTidspunkt;
 
-
             _screeningList.Add(screening);
+
+            var sorteretListe = _screeningList
+                .OrderBy(screening => screening.StartTidspunkt)
+                .ToList();
+
+            _screeningList.Clear();
+
+            foreach (Screening item in sorteretListe)
+            {
+                _screeningList.Add(item);
+            }
 
             _repository.SaveScreenings(
                 _screeningList.ToList());

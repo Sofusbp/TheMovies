@@ -33,5 +33,11 @@ namespace TheMovies.Views
             screeningView.Show();
         }
 
+        private void ÅbnReservationer(object sender, RoutedEventArgs e)
+        {
+            ReservationView reservationView = new ReservationView();
+            reservationView.Show();
+        }
+
     }
 }

@@ -4,5 +4,8 @@
     {
         public int Nummer
         { get; set; }
+
+        public int Kapacitet
+        { get; set; }
     }
 }

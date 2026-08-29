@@ -18,6 +18,7 @@ namespace TheMovies.ViewModels
 
         private string _navn;
         private string _nummerInput;
+        private string _kapacitetInput;
 
         private Cinema _selectedCinema;
 
@@ -68,6 +69,19 @@ namespace TheMovies.ViewModels
             }
         }
 
+        public string KapacitetInput
+        {
+            get { return _kapacitetInput; }
+            set
+            {
+                _kapacitetInput = value;
+
+                PropertyChanged?.Invoke(
+                    this,
+                    new PropertyChangedEventArgs("KapacitetInput"));
+            }
+        }
+
         public Cinema SelectedCinema
         {
             get { return _selectedCinema; }
@@ -112,6 +126,16 @@ namespace TheMovies.ViewModels
                 return;
             }
 
+            if (!int.TryParse(KapacitetInput, out int kapacitet))
+            {
+                return;
+            }
+
+            if (kapacitet <= 0)
+            {
+                return;
+            }
+
             if (SelectedCinema.Sale.Any(room => room.Nummer == nummer))
             {
                 return;
@@ -120,6 +144,7 @@ namespace TheMovies.ViewModels
             CinemaRoom room = new CinemaRoom();
 
             room.Nummer = nummer;
+            room.Kapacitet = kapacitet;
 
             SelectedCinema.Sale.Add(room);
 
@@ -127,6 +152,7 @@ namespace TheMovies.ViewModels
                 _cinemaList.ToList());
 
             NummerInput = "";
+            KapacitetInput = "";
         }
     }
 }
