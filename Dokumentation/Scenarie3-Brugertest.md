@@ -28,9 +28,10 @@ den valgte forestilling.
 
 **Forventet resultat:** Reservationen bliver registreret og vist i listen.
 
-**Faktisk resultat:** Udfyldes efter testen.
+**Faktisk resultat:** Reservationen på 7 billetter blev registreret og vist i
+listen med den valgte film, biograf, sal, tid, email og telefonnummer.
 
-**Godkendt/ikke godkendt:** Udfyldes efter testen.
+**Godkendt/ikke godkendt:** Godkendt.
 
 ## Test 2 – Forsøg at overskride kapaciteten
 
@@ -48,5 +49,5 @@ pladser. Systemet viser beskeden: "Der er kun 3 ledige billetter".
 
 ## Testperson og dato
 
-- Testperson: Udfyldes efter testen.
-- Dato: Udfyldes efter testen.
+- Testperson: Anika
+- Dato: 29/08/2026
