@@ -12,5 +12,15 @@ namespace TheMovies.Views
 
             DataContext = new ReservationViewModel();
         }
+
+        private void ReservationView_IsVisibleChanged(
+            object sender,
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (IsVisible)
+            {
+                DataContext = new ReservationViewModel();
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 <UserControl x:Class="TheMovies.Views.ReservationView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        IsVisibleChanged="ReservationView_IsVisibleChanged"
         MinHeight="650">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
