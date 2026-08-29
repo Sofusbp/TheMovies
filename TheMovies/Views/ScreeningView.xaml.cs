@@ -23,5 +23,15 @@ namespace TheMovies.Views
             InitializeComponent();
             DataContext = new ScreeningViewModel();
         }
+
+        private void ScreeningView_IsVisibleChanged(
+            object sender,
+            DependencyPropertyChangedEventArgs e)
+        {
+            if (IsVisible)
+            {
+                DataContext = new ScreeningViewModel();
+            }
+        }
     }
 }
