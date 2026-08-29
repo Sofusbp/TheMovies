@@ -1,0 +1,107 @@
+<Window x:Class="TheMovies.Views.ReservationView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Reservationer"
+        Height="650"
+        Width="650">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+        <StackPanel Margin="20">
+
+            <TextBlock Text="Forestilling:"/>
+
+            <ComboBox ItemsSource="{Binding ScreeningList}"
+                      SelectedItem="{Binding SelectedScreening}"
+                      Margin="0,0,0,15">
+
+                <ComboBox.ItemTemplate>
+
+                    <DataTemplate>
+
+                        <StackPanel Orientation="Horizontal">
+
+                            <TextBlock Text="{Binding Film.Titel}"/>
+                            <TextBlock Text="{Binding Biograf.Navn,
+                                                      StringFormat=' – {0}'}"/>
+                            <TextBlock Text="{Binding Sal.Nummer,
+                                                      StringFormat=' – sal {0}'}"/>
+                            <TextBlock Text="{Binding StartTidspunkt,
+                                                      StringFormat=' – {0:dd/MM/yyyy HH:mm}'}"/>
+
+                        </StackPanel>
+
+                    </DataTemplate>
+
+                </ComboBox.ItemTemplate>
+
+            </ComboBox>
+
+            <TextBlock Text="Antal billetter:"/>
+
+            <TextBox Text="{Binding AntalBilletterInput, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,0,0,15"/>
+
+            <TextBlock Text="Email:"/>
+
+            <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,0,0,15"/>
+
+            <TextBlock Text="Telefonnummer:"/>
+
+            <TextBox Text="{Binding Telefonnummer, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,0,0,10"/>
+
+            <TextBlock Text="{Binding Fejlbesked}"
+                       Foreground="Red"
+                       Margin="0,0,0,10"/>
+
+            <Button Content="Registrer reservation"
+                    Command="{Binding RegistrerCommand}"
+                    Width="170"
+                    Height="35"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,20"/>
+
+            <TextBlock Text="Registrerede reservationer:"
+                       FontWeight="Bold"
+                       FontSize="16"
+                       Margin="0,0,0,5"/>
+
+            <ListBox ItemsSource="{Binding ReservationList}"
+                     Height="200">
+
+                <ListBox.ItemTemplate>
+
+                    <DataTemplate>
+
+                        <StackPanel Margin="5">
+
+                            <TextBlock Text="{Binding Forestilling.Film.Titel}"
+                                       FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Forestilling.Biograf.Navn,
+                                                      StringFormat='Biograf: {0}'}"/>
+                            <TextBlock Text="{Binding Forestilling.Sal.Nummer,
+                                                      StringFormat='Sal: {0}'}"/>
+                            <TextBlock Text="{Binding Forestilling.StartTidspunkt,
+                                                      StringFormat='Tid: {0:dd/MM/yyyy HH:mm}'}"/>
+                            <TextBlock Text="{Binding AntalBilletter,
+                                                      StringFormat='Billetter: {0}'}"/>
+                            <TextBlock Text="{Binding Email,
+                                                      StringFormat='Email: {0}'}"/>
+                            <TextBlock Text="{Binding Telefonnummer,
+                                                      StringFormat='Telefon: {0}'}"/>
+
+                        </StackPanel>
+
+                    </DataTemplate>
+
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+
+        </StackPanel>
+
+    </ScrollViewer>
+
+</Window>
