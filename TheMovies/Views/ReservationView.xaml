@@ -7,6 +7,11 @@
 
         <StackPanel Margin="20">
 
+            <TextBlock Text="Reservationer"
+                       Style="{StaticResource PageTitleStyle}"/>
+            <TextBlock Text="Registrer kundens billetter til en valgt forestilling."
+                       Style="{StaticResource PageDescriptionStyle}"/>
+
             <TextBlock Text="Forestilling:"/>
 
             <ComboBox ItemsSource="{Binding ScreeningList}"
@@ -61,10 +66,8 @@
                     HorizontalAlignment="Center"
                     Margin="0,0,0,20"/>
 
-            <TextBlock Text="Registrerede reservationer:"
-                       FontWeight="Bold"
-                       FontSize="16"
-                       Margin="0,0,0,5"/>
+            <TextBlock Text="Registrerede reservationer"
+                       Style="{StaticResource SectionTitleStyle}"/>
 
             <ListBox ItemsSource="{Binding ReservationList}"
                      Height="200">

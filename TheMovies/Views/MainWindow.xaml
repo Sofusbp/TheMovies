@@ -18,7 +18,12 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-        <StackPanel Margin="10">
+        <StackPanel Margin="28" MaxWidth="900">
+
+            <TextBlock Text="Film"
+                       Style="{StaticResource PageTitleStyle}"/>
+            <TextBlock Text="Opret og administrer film i biografens katalog."
+                       Style="{StaticResource PageDescriptionStyle}"/>
 
             <!-- Titel -->
             <TextBlock TextWrapping="Wrap"
@@ -155,9 +160,8 @@
                     Margin="0,15,0,15"/>
             
             <!-- Liste -->
-            <TextBlock Text="Registrerede film:"
-                       FontWeight="Bold"
-                       Margin="0,0,0,5"/>
+            <TextBlock Text="Registrerede film"
+                       Style="{StaticResource SectionTitleStyle}"/>
 
             <ListBox ItemsSource="{Binding MovieList}"
                      SelectedItem="{Binding SelectedMovie}"

@@ -7,6 +7,11 @@
 
         <StackPanel Margin="20">
 
+            <TextBlock Text="Biografer og sale"
+                       Style="{StaticResource PageTitleStyle}"/>
+            <TextBlock Text="Opret biografer og angiv kapaciteten i deres sale."
+                       Style="{StaticResource PageDescriptionStyle}"/>
+
             <TextBlock Text="Biografnavn:"/>
 
             <TextBox Text="{Binding Navn, UpdateSourceTrigger=PropertyChanged}"
@@ -19,10 +24,8 @@
                     HorizontalAlignment="Center"
                     Margin="0,0,0,20"/>
 
-            <TextBlock Text="Biografer:"
-                       FontWeight="Bold"
-                       FontSize="16"
-                       Margin="0,0,0,5"/>
+            <TextBlock Text="Biografer"
+                       Style="{StaticResource SectionTitleStyle}"/>
 
             <ListBox ItemsSource="{Binding CinemaList}"
                      SelectedItem="{Binding SelectedCinema}"
