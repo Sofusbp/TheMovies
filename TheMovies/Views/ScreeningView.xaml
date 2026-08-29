@@ -63,37 +63,19 @@
                        Style="{StaticResource SectionTitleStyle}"/>
 
 
-            <ListBox ItemsSource="{Binding ScreeningList}"
-                     Height="180">
-
-                <ListBox.ItemTemplate>
-
-                    <DataTemplate>
-
-                        <StackPanel Margin="5">
-
-                            <TextBlock Text="{Binding Film.Titel}"
-                                       FontWeight="Bold"/>
-
-                            <TextBlock Text="{Binding Biograf.Navn,
-                                                      StringFormat='Biograf: {0}'}"/>
-
-                            <TextBlock Text="{Binding Sal.Nummer,
-                                                      StringFormat='Sal {0}'}"/>
-
-                            <TextBlock Text="{Binding StartTidspunkt,
-                                                      StringFormat='Start: {0:dd/MM/yyyy HH:mm}'}"/>
-
-                            <TextBlock Text="{Binding SlutTidspunkt,
-                                                      StringFormat='Slut: {0:dd/MM/yyyy HH:mm}'}"/>
-
-                        </StackPanel>
-
-                    </DataTemplate>
-
-                </ListBox.ItemTemplate>
-
-            </ListBox>
+            <DataGrid ItemsSource="{Binding ScreeningList}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      MinHeight="210">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Film" Binding="{Binding Film.Titel}" Width="2*"/>
+                    <DataGridTextColumn Header="Biograf" Binding="{Binding Biograf.Navn}" Width="*"/>
+                    <DataGridTextColumn Header="Sal" Binding="{Binding Sal.Nummer}" Width="Auto"/>
+                    <DataGridTextColumn Header="Start" Binding="{Binding StartTidspunkt, StringFormat=dd/MM/yyyy HH:mm}" Width="*"/>
+                    <DataGridTextColumn Header="Slut" Binding="{Binding SlutTidspunkt, StringFormat=dd/MM/yyyy HH:mm}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
 
         </StackPanel>
 

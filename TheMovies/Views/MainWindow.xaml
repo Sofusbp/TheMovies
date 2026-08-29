@@ -167,34 +167,20 @@
             <TextBlock Text="Registrerede film"
                        Style="{StaticResource SectionTitleStyle}"/>
 
-            <ListBox ItemsSource="{Binding MovieList}"
-                     SelectedItem="{Binding SelectedMovie}"
-                     Height="150">
-
-                <ListBox.ItemTemplate>
-
-                    <DataTemplate>
-
-                        <StackPanel Margin="5">
-
-                            <TextBlock Text="{Binding Titel}"
-                                       FontWeight="Bold"/>
-
-                            <TextBlock Text="{Binding Varighed}"/>
-
-                            <TextBlock Text="{Binding Genre}"/>
-
-                            <TextBlock Text="{Binding Instruktøer}"/>
-
-                            <TextBlock Text="{Binding Premieredato, StringFormat=d}"/>
-
-                        </StackPanel>
-
-                    </DataTemplate>
-
-                </ListBox.ItemTemplate>
-
-            </ListBox>
+            <DataGrid ItemsSource="{Binding MovieList}"
+                      SelectedItem="{Binding SelectedMovie}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      MinHeight="190">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Titel" Binding="{Binding Titel}" Width="2*"/>
+                    <DataGridTextColumn Header="Varighed" Binding="{Binding Varighed, StringFormat={}{0} min.}" Width="*"/>
+                    <DataGridTextColumn Header="Genre" Binding="{Binding Genre}" Width="*"/>
+                    <DataGridTextColumn Header="Instruktør" Binding="{Binding Instruktøer}" Width="2*"/>
+                    <DataGridTextColumn Header="Premiere" Binding="{Binding Premieredato, StringFormat=dd/MM/yyyy}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
 
 
             <!-- Slet -->

@@ -78,37 +78,21 @@
             <TextBlock Text="Registrerede reservationer"
                        Style="{StaticResource SectionTitleStyle}"/>
 
-            <ListBox ItemsSource="{Binding ReservationList}"
-                     Height="200">
-
-                <ListBox.ItemTemplate>
-
-                    <DataTemplate>
-
-                        <StackPanel Margin="5">
-
-                            <TextBlock Text="{Binding Forestilling.Film.Titel}"
-                                       FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Forestilling.Biograf.Navn,
-                                                      StringFormat='Biograf: {0}'}"/>
-                            <TextBlock Text="{Binding Forestilling.Sal.Nummer,
-                                                      StringFormat='Sal: {0}'}"/>
-                            <TextBlock Text="{Binding Forestilling.StartTidspunkt,
-                                                      StringFormat='Tid: {0:dd/MM/yyyy HH:mm}'}"/>
-                            <TextBlock Text="{Binding AntalBilletter,
-                                                      StringFormat='Billetter: {0}'}"/>
-                            <TextBlock Text="{Binding Email,
-                                                      StringFormat='Email: {0}'}"/>
-                            <TextBlock Text="{Binding Telefonnummer,
-                                                      StringFormat='Telefon: {0}'}"/>
-
-                        </StackPanel>
-
-                    </DataTemplate>
-
-                </ListBox.ItemTemplate>
-
-            </ListBox>
+            <DataGrid ItemsSource="{Binding ReservationList}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      MinHeight="230">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Film" Binding="{Binding Forestilling.Film.Titel}" Width="2*"/>
+                    <DataGridTextColumn Header="Tid" Binding="{Binding Forestilling.StartTidspunkt, StringFormat=dd/MM/yyyy HH:mm}" Width="*"/>
+                    <DataGridTextColumn Header="Biograf" Binding="{Binding Forestilling.Biograf.Navn}" Width="*"/>
+                    <DataGridTextColumn Header="Sal" Binding="{Binding Forestilling.Sal.Nummer}" Width="Auto"/>
+                    <DataGridTextColumn Header="Billetter" Binding="{Binding AntalBilletter}" Width="Auto"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="2*"/>
+                    <DataGridTextColumn Header="Telefon" Binding="{Binding Telefonnummer}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
 
         </StackPanel>
 
