@@ -87,6 +87,7 @@
 
             <Button Content="Slet valgt forestilling"
                     Command="{Binding SletCommand}"
+                    Style="{StaticResource DangerButtonStyle}"
                     Width="180"
                     HorizontalAlignment="Center"
                     Margin="0,12,0,8"/>

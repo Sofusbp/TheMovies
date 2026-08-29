@@ -12,7 +12,20 @@
         MinHeight="600"
         MinWidth="850">
 
-    <TabControl>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="72"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="#182033" Padding="24,14">
+            <StackPanel>
+                <TextBlock Text="THE MOVIES" Foreground="White" FontSize="22" FontWeight="SemiBold"/>
+                <TextBlock Text="Administration af biografer, forestillinger og reservationer" Foreground="#C8D1E3"/>
+            </StackPanel>
+        </Border>
+
+    <TabControl Grid.Row="1" TabStripPlacement="Left">
 
         <TabItem Header="Film">
 
@@ -161,6 +174,7 @@
 
             <Button Content="Gem ændringer"
                     Command="{Binding GemCommand}"
+                    Style="{StaticResource SecondaryButtonStyle}"
                     Width="140"
                     HorizontalAlignment="Center"
                     Margin="0,0,0,12"/>
@@ -204,6 +218,7 @@
             <!-- Slet -->
             <Button Content="Slet valgt film"
                     Command="{Binding SletCommand}"
+                    Style="{StaticResource DangerButtonStyle}"
                     Height="38"
                     Width="102"
                     HorizontalAlignment="Center"
@@ -228,5 +243,6 @@
         </TabItem>
 
     </TabControl>
+    </Grid>
 
 </Window>
