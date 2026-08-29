@@ -16,7 +16,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../TheMovies/TheMovies.csproj" />
+    <Compile Include="../TheMovies/Models/Cinema.cs" Link="Models/Cinema.cs" />
+    <Compile Include="../TheMovies/Models/CinemaRoom.cs" Link="Models/CinemaRoom.cs" />
+    <Compile Include="../TheMovies/Models/Movie.cs" Link="Models/Movie.cs" />
+    <Compile Include="../TheMovies/Models/Reservation.cs" Link="Models/Reservation.cs" />
+    <Compile Include="../TheMovies/Models/Screening.cs" Link="Models/Screening.cs" />
+    <Compile Include="../TheMovies/Repositories/FileReservationRepository.cs" Link="Repositories/FileReservationRepository.cs" />
+    <Compile Include="../TheMovies/Repositories/FileScreeningRepository.cs" Link="Repositories/FileScreeningRepository.cs" />
+    <Compile Include="../TheMovies/ViewModels/RelayCommand.cs" Link="ViewModels/RelayCommand.cs" />
+    <Compile Include="../TheMovies/ViewModels/ReservationViewModel.cs" Link="ViewModels/ReservationViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
