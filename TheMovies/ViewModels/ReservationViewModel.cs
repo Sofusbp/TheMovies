@@ -19,6 +19,7 @@ namespace TheMovies.ViewModels
         private string _antalBilletterInput;
         private string _email;
         private string _telefonnummer;
+        private string _fejlbesked;
 
         public ReservationViewModel()
         {
@@ -92,6 +93,57 @@ namespace TheMovies.ViewModels
                     this,
                     new PropertyChangedEventArgs("Telefonnummer"));
             }
+        }
+
+        public string Fejlbesked
+        {
+            get { return _fejlbesked; }
+            set
+            {
+                _fejlbesked = value;
+
+                PropertyChanged?.Invoke(
+                    this,
+                    new PropertyChangedEventArgs("Fejlbesked"));
+            }
+        }
+
+        public bool ValiderInput(out int antalBilletter)
+        {
+            antalBilletter = 0;
+
+            if (SelectedScreening == null)
+            {
+                Fejlbesked = "Vælg en forestilling";
+                return false;
+            }
+
+            if (!int.TryParse(AntalBilletterInput, out antalBilletter))
+            {
+                Fejlbesked = "Antal billetter skal være et tal";
+                return false;
+            }
+
+            if (antalBilletter <= 0)
+            {
+                Fejlbesked = "Antal billetter skal være større end 0";
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Email))
+            {
+                Fejlbesked = "Email må ikke være tom";
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(Telefonnummer))
+            {
+                Fejlbesked = "Telefonnummer må ikke være tomt";
+                return false;
+            }
+
+            Fejlbesked = "";
+            return true;
         }
     }
 }
