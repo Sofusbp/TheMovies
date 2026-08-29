@@ -94,6 +94,15 @@
                 </DataGrid.Columns>
             </DataGrid>
 
+            <TextBlock Text="Ingen reservationer endnu. Vælg en forestilling og registrer kundens billetter.">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource EmptyStateStyle}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers><DataTrigger Binding="{Binding ReservationList.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
         </StackPanel>
 
     </ScrollViewer>

@@ -73,6 +73,15 @@
 
             </ListBox>
 
+            <TextBlock Text="Ingen biografer er oprettet endnu. Opret en biograf, før du tilføjer sale.">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource EmptyStateStyle}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers><DataTrigger Binding="{Binding CinemaList.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
             <TextBlock Text="Sal nummer:"
                        Margin="0,15,0,0"/>
 

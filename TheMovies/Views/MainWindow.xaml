@@ -182,6 +182,15 @@
                 </DataGrid.Columns>
             </DataGrid>
 
+            <TextBlock Text="Ingen film er oprettet endnu. Udfyld formularen ovenfor for at komme i gang.">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource EmptyStateStyle}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers><DataTrigger Binding="{Binding MovieList.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
 
             <!-- Slet -->
             <Button Content="Slet"
