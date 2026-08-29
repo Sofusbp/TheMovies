@@ -28,6 +28,9 @@ namespace TheMovies.ViewModels
         private CinemaRoom _selectedRoom;
 
         private DateTime _startTidspunkt;
+        private DateTime _dato;
+        private string _tidInput = "18:00";
+        private string _beregnetSluttid = "";
         private string _fejlbesked = "";
         private string _succesbesked = "";
 
@@ -50,6 +53,7 @@ namespace TheMovies.ViewModels
             _roomList = new ObservableCollection<CinemaRoom>();
 
             _startTidspunkt = DateTime.Today.AddHours(18);
+            _dato = DateTime.Today;
 
             RegistrerCommand = new RelayCommand(
                 parameter => RegistrerForestilling());
@@ -87,6 +91,7 @@ namespace TheMovies.ViewModels
             set
             {
                 _selectedMovie = value;
+                OpdaterBeregnetSluttid();
 
                 PropertyChanged?.Invoke(
                     this,
@@ -153,6 +158,24 @@ namespace TheMovies.ViewModels
             }
         }
 
+        public DateTime Dato
+        {
+            get { return _dato; }
+            set { _dato = value; OpdaterStarttidspunkt(); PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Dato")); }
+        }
+
+        public string TidInput
+        {
+            get { return _tidInput; }
+            set { _tidInput = value; OpdaterStarttidspunkt(); PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TidInput")); }
+        }
+
+        public string BeregnetSluttid
+        {
+            get { return _beregnetSluttid; }
+            set { _beregnetSluttid = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("BeregnetSluttid")); }
+        }
+
         public string Fejlbesked
         {
             get { return _fejlbesked; }
@@ -185,6 +208,14 @@ namespace TheMovies.ViewModels
                 Fejlbesked = "Vælg en sal";
                 return;
             }
+
+            if (!TimeSpan.TryParse(TidInput, out TimeSpan tid))
+            {
+                Fejlbesked = "Indtast tidspunktet som f.eks. 18:30";
+                return;
+            }
+
+            StartTidspunkt = Dato.Date.Add(tid);
 
             DateTime slutTidspunkt = StartTidspunkt
                 .AddMinutes(SelectedMovie.Varighed)
@@ -229,6 +260,32 @@ namespace TheMovies.ViewModels
                 _screeningList.ToList());
             Fejlbesked = "";
             Succesbesked = "Forestillingen er registreret";
+        }
+
+        private void OpdaterStarttidspunkt()
+        {
+            if (TimeSpan.TryParse(TidInput, out TimeSpan tid))
+            {
+                StartTidspunkt = Dato.Date.Add(tid);
+                OpdaterBeregnetSluttid();
+            }
+            else
+            {
+                BeregnetSluttid = "";
+            }
+        }
+
+        private void OpdaterBeregnetSluttid()
+        {
+            if (SelectedMovie == null)
+            {
+                BeregnetSluttid = "";
+                return;
+            }
+
+            DateTime slut = StartTidspunkt
+                .AddMinutes(SelectedMovie.Varighed + 30);
+            BeregnetSluttid = $"Forventet sluttid: {slut:HH:mm} (inkl. reklamer og rengøring)";
         }
     }
 }
