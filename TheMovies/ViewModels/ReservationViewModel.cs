@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using TheMovies.Models;
 using TheMovies.Repositories;
 
@@ -139,6 +140,38 @@ namespace TheMovies.ViewModels
             if (string.IsNullOrWhiteSpace(Telefonnummer))
             {
                 Fejlbesked = "Telefonnummer må ikke være tomt";
+                return false;
+            }
+
+            Fejlbesked = "";
+            return true;
+        }
+
+        public bool ValiderKapacitet(int antalBilletter)
+        {
+            if (SelectedScreening == null)
+            {
+                Fejlbesked = "Vælg en forestilling";
+                return false;
+            }
+
+            if (SelectedScreening.Sal.Kapacitet <= 0)
+            {
+                Fejlbesked = "Salen har ingen gyldig kapacitet";
+                return false;
+            }
+
+            int reserveredeBilletter = _reservationList
+                .Where(reservation =>
+                    reservation.Forestilling.Id == SelectedScreening.Id)
+                .Sum(reservation => reservation.AntalBilletter);
+
+            int ledigeBilletter =
+                SelectedScreening.Sal.Kapacitet - reserveredeBilletter;
+
+            if (antalBilletter > ledigeBilletter)
+            {
+                Fejlbesked = $"Der er kun {ledigeBilletter} ledige billetter";
                 return false;
             }
 
