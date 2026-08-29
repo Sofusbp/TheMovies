@@ -169,7 +169,9 @@ namespace TheMovies.ViewModels
 
             int reserveredeBilletter = _reservationList
                 .Where(reservation =>
-                    reservation.Forestilling.Id == SelectedScreening.Id)
+                    ErSammeForestilling(
+                        reservation.Forestilling,
+                        SelectedScreening))
                 .Sum(reservation => reservation.AntalBilletter);
 
             int ledigeBilletter =
@@ -183,6 +185,21 @@ namespace TheMovies.ViewModels
 
             Fejlbesked = "";
             return true;
+        }
+
+        private bool ErSammeForestilling(
+            Screening gemtForestilling,
+            Screening valgtForestilling)
+        {
+            if (gemtForestilling.Id == valgtForestilling.Id)
+            {
+                return true;
+            }
+
+            return gemtForestilling.Film.Titel == valgtForestilling.Film.Titel &&
+                   gemtForestilling.Biograf.Navn == valgtForestilling.Biograf.Navn &&
+                   gemtForestilling.Sal.Nummer == valgtForestilling.Sal.Nummer &&
+                   gemtForestilling.StartTidspunkt == valgtForestilling.StartTidspunkt;
         }
 
         public void RegistrerReservation()

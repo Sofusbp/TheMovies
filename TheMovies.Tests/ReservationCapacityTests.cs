@@ -52,6 +52,35 @@ namespace TheMovies.Tests
             Assert.Equal("Der er kun 3 ledige billetter", viewModel.Fejlbesked);
         }
 
+        [Fact]
+        public void ValiderKapacitet_MedregnerReservationMedTidligereId()
+        {
+            // Arrange
+            Screening valgtForestilling = OpretForestilling(10);
+            Screening gemtForestilling = OpretForestilling(10);
+            ReservationViewModel viewModel = new ReservationViewModel
+            {
+                SelectedScreening = valgtForestilling
+            };
+
+            viewModel.ReservationList.Clear();
+            viewModel.ReservationList.Add(new Reservation
+            {
+                Forestilling = gemtForestilling,
+                AntalBilletter = 7,
+                Email = "kunde@example.com",
+                Telefonnummer = "12345678"
+            });
+
+            // Act
+            bool resultat = viewModel.ValiderKapacitet(4);
+
+            // Assert
+            Assert.NotEqual(valgtForestilling.Id, gemtForestilling.Id);
+            Assert.False(resultat);
+            Assert.Equal("Der er kun 3 ledige billetter", viewModel.Fejlbesked);
+        }
+
         private static Screening OpretForestilling(int kapacitet)
         {
             return new Screening
