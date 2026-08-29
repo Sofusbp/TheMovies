@@ -43,9 +43,10 @@ listen med den valgte film, biograf, sal, tid, email og telefonnummer.
 **Forventet resultat:** Reservationen bliver afvist, fordi der kun er 3 ledige
 pladser. Systemet viser beskeden: "Der er kun 3 ledige billetter".
 
-**Faktisk resultat:** Udfyldes efter testen.
+**Faktisk resultat:** Reservationsforsøget på 4 billetter blev afvist, og
+systemet viste beskeden: "Der er kun 3 ledige billetter".
 
-**Godkendt/ikke godkendt:** Udfyldes efter testen.
+**Godkendt/ikke godkendt:** Godkendt.
 
 ## Testperson og dato
 
