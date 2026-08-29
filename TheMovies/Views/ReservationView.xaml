@@ -59,6 +59,10 @@
                        Foreground="Red"
                        Margin="0,0,0,10"/>
 
+            <TextBlock Text="{Binding Succesbesked}"
+                       Foreground="#287A3D"
+                       Margin="0,0,0,10"/>
+
             <Button Content="Registrer reservation"
                     Command="{Binding RegistrerCommand}"
                     Width="170"

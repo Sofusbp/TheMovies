@@ -24,6 +24,7 @@ namespace TheMovies.ViewModels
         private string _email;
         private string _telefonnummer;
         private string _fejlbesked;
+        private string _succesbesked = "";
 
         public ReservationViewModel()
             : this(new FileReservationRepository())
@@ -119,6 +120,12 @@ namespace TheMovies.ViewModels
                     this,
                     new PropertyChangedEventArgs("Fejlbesked"));
             }
+        }
+
+        public string Succesbesked
+        {
+            get { return _succesbesked; }
+            set { _succesbesked = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Succesbesked")); }
         }
 
         public bool ValiderInput(out int antalBilletter)
@@ -237,6 +244,8 @@ namespace TheMovies.ViewModels
             AntalBilletterInput = "";
             Email = "";
             Telefonnummer = "";
+            Fejlbesked = "";
+            Succesbesked = "Reservationen er gemt";
         }
 
         private void OpdaterReservationerFraFil()

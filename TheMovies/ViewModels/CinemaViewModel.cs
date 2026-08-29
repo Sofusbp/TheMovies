@@ -19,6 +19,8 @@ namespace TheMovies.ViewModels
         private string _navn;
         private string _nummerInput;
         private string _kapacitetInput;
+        private string _fejlbesked = "";
+        private string _succesbesked = "";
 
         private Cinema _selectedCinema;
 
@@ -95,10 +97,23 @@ namespace TheMovies.ViewModels
             }
         }
 
+        public string Fejlbesked
+        {
+            get { return _fejlbesked; }
+            set { _fejlbesked = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Fejlbesked")); }
+        }
+
+        public string Succesbesked
+        {
+            get { return _succesbesked; }
+            set { _succesbesked = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Succesbesked")); }
+        }
+
         public void OpretBiograf()
         {
             if (string.IsNullOrWhiteSpace(Navn))
             {
+                Fejlbesked = "Indtast et navn til biografen";
                 return;
             }
 
@@ -112,32 +127,39 @@ namespace TheMovies.ViewModels
                 _cinemaList.ToList());
 
             Navn = "";
+            Fejlbesked = "";
+            Succesbesked = "Biografen er oprettet";
         }
 
         public void OpretSal()
         {
             if (SelectedCinema == null)
             {
+                Fejlbesked = "Vælg en biograf";
                 return;
             }
 
             if (!int.TryParse(NummerInput, out int nummer))
             {
+                Fejlbesked = "Salnummer skal være et tal";
                 return;
             }
 
             if (!int.TryParse(KapacitetInput, out int kapacitet))
             {
+                Fejlbesked = "Kapacitet skal være et tal";
                 return;
             }
 
             if (kapacitet <= 0)
             {
+                Fejlbesked = "Kapacitet skal være større end 0";
                 return;
             }
 
             if (SelectedCinema.Sale.Any(room => room.Nummer == nummer))
             {
+                Fejlbesked = "Salnummeret findes allerede i biografen";
                 return;
             }
 
@@ -153,6 +175,8 @@ namespace TheMovies.ViewModels
 
             NummerInput = "";
             KapacitetInput = "";
+            Fejlbesked = "";
+            Succesbesked = "Salen er oprettet";
         }
     }
 }

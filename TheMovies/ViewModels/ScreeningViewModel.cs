@@ -28,6 +28,8 @@ namespace TheMovies.ViewModels
         private CinemaRoom _selectedRoom;
 
         private DateTime _startTidspunkt;
+        private string _fejlbesked = "";
+        private string _succesbesked = "";
 
         public ScreeningViewModel()
         {
@@ -151,21 +153,36 @@ namespace TheMovies.ViewModels
             }
         }
 
+        public string Fejlbesked
+        {
+            get { return _fejlbesked; }
+            set { _fejlbesked = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Fejlbesked")); }
+        }
+
+        public string Succesbesked
+        {
+            get { return _succesbesked; }
+            set { _succesbesked = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Succesbesked")); }
+        }
+
 
         public void RegistrerForestilling()
         {
             if (SelectedMovie == null)
             {
+                Fejlbesked = "Vælg en film";
                 return;
             }
 
             if (SelectedCinema == null)
             {
+                Fejlbesked = "Vælg en biograf";
                 return;
             }
 
             if (SelectedRoom == null)
             {
+                Fejlbesked = "Vælg en sal";
                 return;
             }
 
@@ -183,6 +200,7 @@ namespace TheMovies.ViewModels
 
             if (overlap)
             {
+                Fejlbesked = "Salen er allerede optaget på dette tidspunkt";
                 return;
             }
 
@@ -209,6 +227,8 @@ namespace TheMovies.ViewModels
 
             _repository.SaveScreenings(
                 _screeningList.ToList());
+            Fejlbesked = "";
+            Succesbesked = "Forestillingen er registreret";
         }
     }
 }

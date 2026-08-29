@@ -90,6 +90,9 @@
                     Height="35"
                     HorizontalAlignment="Center"/>
 
+            <TextBlock Text="{Binding Fejlbesked}" Foreground="#C62828" Margin="0,12,0,0"/>
+            <TextBlock Text="{Binding Succesbesked}" Foreground="#287A3D" Margin="0,4,0,0"/>
+
         </StackPanel>
 
     </ScrollViewer>

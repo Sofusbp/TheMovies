@@ -28,6 +28,7 @@ namespace TheMovies.ViewModels
         private string _fejlVarighed;
         private string _fejlGenre;
         private string _instruktøer;
+        private string _succesbesked = "";
         private DateTime _premieredato;
 
 
@@ -187,6 +188,12 @@ namespace TheMovies.ViewModels
             }
         }
 
+        public string Succesbesked
+        {
+            get { return _succesbesked; }
+            set { _succesbesked = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Succesbesked")); }
+        }
+
         public void RegistrerFilm()
         {
             if (string.IsNullOrWhiteSpace(Titel))
@@ -230,6 +237,7 @@ namespace TheMovies.ViewModels
             _movieList.Add(movie);
 
             _repository.SaveMovie(_movieList.ToList());
+            Succesbesked = "Filmen er registreret";
         }
 
         public void SletFilm()
