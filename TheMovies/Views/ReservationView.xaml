@@ -22,15 +22,20 @@
 
                     <DataTemplate>
 
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel>
 
-                            <TextBlock Text="{Binding Film.Titel}"/>
+                            <TextBlock Text="{Binding Film.Titel}" FontWeight="SemiBold"/>
+                            <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Biograf.Navn,
-                                                      StringFormat=' – {0}'}"/>
+                                                      StringFormat='{}{0}'}"/>
                             <TextBlock Text="{Binding Sal.Nummer,
                                                       StringFormat=' – sal {0}'}"/>
                             <TextBlock Text="{Binding StartTidspunkt,
                                                       StringFormat=' – {0:dd/MM/yyyy HH:mm}'}"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding LedigePladser,
+                                                      StringFormat='Ledige pladser: {0}'}"
+                                       Foreground="{StaticResource MutedTextBrush}"/>
 
                         </StackPanel>
 

@@ -43,6 +43,8 @@ namespace TheMovies.ViewModels
             _screeningList = new ObservableCollection<Screening>(
                 _screeningRepository.LoadScreenings());
 
+            OpdaterLedigePladser();
+
             RegistrerCommand = new RelayCommand(
                 parameter => RegistrerReservation());
         }
@@ -241,6 +243,8 @@ namespace TheMovies.ViewModels
             _reservationRepository.SaveReservations(
                 _reservationList.ToList());
 
+            OpdaterLedigePladser();
+
             AntalBilletterInput = "";
             Email = "";
             Telefonnummer = "";
@@ -259,6 +263,24 @@ namespace TheMovies.ViewModels
             {
                 _reservationList.Add(reservation);
             }
+        }
+
+        private void OpdaterLedigePladser()
+        {
+            foreach (Screening screening in _screeningList)
+            {
+                int reserveredeBilletter = _reservationList
+                    .Where(reservation =>
+                        ErSammeForestilling(reservation.Forestilling, screening))
+                    .Sum(reservation => reservation.AntalBilletter);
+
+                screening.LedigePladser =
+                    Math.Max(0, screening.Sal.Kapacitet - reserveredeBilletter);
+            }
+
+            PropertyChanged?.Invoke(
+                this,
+                new PropertyChangedEventArgs("ScreeningList"));
         }
     }
 }
