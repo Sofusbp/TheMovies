@@ -4,14 +4,39 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TheMovies"
+        xmlns:views="clr-namespace:TheMovies.Views"
         mc:Ignorable="d"
-        Title="MainWindow"
-        Height="600"
-        Width="800">
+        Title="The Movies"
+        Height="720"
+        Width="1000"
+        MinHeight="600"
+        MinWidth="850">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="72"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="#182033" Padding="24,14">
+            <StackPanel>
+                <TextBlock Text="THE MOVIES" Foreground="White" FontSize="22" FontWeight="SemiBold"/>
+                <TextBlock Text="Administration af biografer, forestillinger og reservationer" Foreground="#C8D1E3"/>
+            </StackPanel>
+        </Border>
+
+    <TabControl Grid.Row="1" TabStripPlacement="Left">
+
+        <TabItem Header="Film">
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-        <StackPanel Margin="10">
+        <StackPanel Margin="28" MaxWidth="900">
+
+            <TextBlock Text="Film"
+                       Style="{StaticResource PageTitleStyle}"/>
+            <TextBlock Text="Opret og administrer film i biografens katalog."
+                       Style="{StaticResource PageDescriptionStyle}"/>
 
             <!-- Titel -->
             <TextBlock TextWrapping="Wrap"
@@ -146,69 +171,54 @@
                     Width="102"
                     HorizontalAlignment="Center"
                     Margin="0,15,0,15"/>
+
+            <Button Content="Gem ændringer"
+                    Command="{Binding GemCommand}"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Width="140"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,12"/>
+
+            <TextBlock Text="{Binding Succesbesked}"
+                       Foreground="#287A3D"
+                       Margin="0,0,0,10"/>
             
-            <!-- Biografer -->
-            <Button Content="Biografer"
-                    Click="ÅbnBiografer"
-                    Height="39"
-                    Width="102"
-                    HorizontalAlignment="Center"
-                    Margin="0,0,0,15"/>
-
-            <!-- Forestillinger -->
-            <Button Content="Forestillinger"
-                    Click="ÅbnForestillinger"
-                    Height="39"
-                    Width="130"
-                    HorizontalAlignment="Center"
-                    Margin="0,0,0,15"/>
-
-            <!-- Reservationer -->
-            <Button Content="Reservationer"
-                    Click="ÅbnReservationer"
-                    Height="39"
-                    Width="130"
-                    HorizontalAlignment="Center"
-                    Margin="0,0,0,15"/>
-
             <!-- Liste -->
-            <TextBlock Text="Registrerede film:"
-                       FontWeight="Bold"
-                       Margin="0,0,0,5"/>
+            <TextBlock Text="Registrerede film"
+                       Style="{StaticResource SectionTitleStyle}"/>
 
-            <ListBox ItemsSource="{Binding MovieList}"
-                     SelectedItem="{Binding SelectedMovie}"
-                     Height="150">
+            <TextBox Text="{Binding SoegeTekst, UpdateSourceTrigger=PropertyChanged}"
+                     ToolTip="Søg efter titel eller genre"/>
 
-                <ListBox.ItemTemplate>
+            <DataGrid ItemsSource="{Binding MovieView}"
+                      SelectedItem="{Binding SelectedMovie}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      MinHeight="190">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Titel" Binding="{Binding Titel}" Width="2*"/>
+                    <DataGridTextColumn Header="Varighed" Binding="{Binding Varighed, StringFormat={}{0} min.}" Width="*"/>
+                    <DataGridTextColumn Header="Genre" Binding="{Binding Genre}" Width="*"/>
+                    <DataGridTextColumn Header="Instruktør" Binding="{Binding Instruktøer}" Width="2*"/>
+                    <DataGridTextColumn Header="Premiere" Binding="{Binding Premieredato, StringFormat=dd/MM/yyyy}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
 
-                    <DataTemplate>
-
-                        <StackPanel Margin="5">
-
-                            <TextBlock Text="{Binding Titel}"
-                                       FontWeight="Bold"/>
-
-                            <TextBlock Text="{Binding Varighed}"/>
-
-                            <TextBlock Text="{Binding Genre}"/>
-
-                            <TextBlock Text="{Binding Instruktøer}"/>
-
-                            <TextBlock Text="{Binding Premieredato, StringFormat=d}"/>
-
-                        </StackPanel>
-
-                    </DataTemplate>
-
-                </ListBox.ItemTemplate>
-
-            </ListBox>
+            <TextBlock Text="Ingen film er oprettet endnu. Udfyld formularen ovenfor for at komme i gang.">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource EmptyStateStyle}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers><DataTrigger Binding="{Binding MovieList.Count}" Value="0"><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
 
 
             <!-- Slet -->
-            <Button Content="Slet"
+            <Button Content="Slet valgt film"
                     Command="{Binding SletCommand}"
+                    Style="{StaticResource DangerButtonStyle}"
                     Height="38"
                     Width="102"
                     HorizontalAlignment="Center"
@@ -217,5 +227,22 @@
         </StackPanel>
 
     </ScrollViewer>
+
+        </TabItem>
+
+        <TabItem Header="Biografer og sale">
+            <views:CinemaView/>
+        </TabItem>
+
+        <TabItem Header="Forestillinger">
+            <views:ScreeningView/>
+        </TabItem>
+
+        <TabItem Header="Reservationer">
+            <views:ReservationView/>
+        </TabItem>
+
+    </TabControl>
+    </Grid>
 
 </Window>

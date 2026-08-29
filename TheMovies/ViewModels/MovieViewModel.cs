@@ -18,6 +18,7 @@ namespace TheMovies.ViewModels
 
         public ICommand RegistrerCommand { get; }
         public ICommand SletCommand { get; }
+        public ICommand GemCommand { get; }
 
         private FileMovieRepository _repository;
         private Movie _selectedMovie;
@@ -28,6 +29,8 @@ namespace TheMovies.ViewModels
         private string _fejlVarighed;
         private string _fejlGenre;
         private string _instruktøer;
+        private string _succesbesked = "";
+        private string _soegeTekst = "";
         private DateTime _premieredato;
 
 
@@ -140,12 +143,37 @@ namespace TheMovies.ViewModels
                 _movieList.Add(movie);
             }
 
-            RegistrerCommand = new RelayCommand(Parameter => RegistrerFilm());
-            SletCommand = new RelayCommand(Parameter => SletFilm());
+            MovieView = System.Windows.Data.CollectionViewSource.GetDefaultView(_movieList);
+            MovieView.Filter = FiltrerFilm;
+
+            RegistrerCommand = new RelayCommand(
+                parameter => RegistrerFilm(),
+                parameter => KanRegistrereFilm());
+            SletCommand = new RelayCommand(
+                parameter => SletFilm(),
+                parameter => SelectedMovie != null);
+            GemCommand = new RelayCommand(
+                parameter => GemFilm(),
+                parameter => SelectedMovie != null && KanRegistrereFilm());
         }
 
 
         public ObservableCollection<Movie> MovieList { get { return _movieList; } }
+        public System.ComponentModel.ICollectionView MovieView { get; }
+
+        public string SoegeTekst
+        {
+            get { return _soegeTekst; }
+            set { _soegeTekst = value; MovieView.Refresh(); PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SoegeTekst")); }
+        }
+
+        private bool FiltrerFilm(object item)
+        {
+            Movie movie = (Movie)item;
+            return string.IsNullOrWhiteSpace(SoegeTekst) ||
+                   movie.Titel.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase) ||
+                   movie.Genre.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase);
+        }
 
         public Movie SelectedMovie
         { 
@@ -153,6 +181,14 @@ namespace TheMovies.ViewModels
             set
             {
                 _selectedMovie = value;
+                if (value != null)
+                {
+                    Titel = value.Titel;
+                    VarighedInput = value.Varighed.ToString();
+                    Genre = value.Genre;
+                    Instruktøer = value.Instruktøer;
+                    Premieredato = value.Premieredato;
+                }
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedMovie"));
             }
         }
@@ -185,6 +221,12 @@ namespace TheMovies.ViewModels
                 _fejlGenre = value;
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("FejlGenre"));
             }
+        }
+
+        public string Succesbesked
+        {
+            get { return _succesbesked; }
+            set { _succesbesked = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Succesbesked")); }
         }
 
         public void RegistrerFilm()
@@ -230,15 +272,41 @@ namespace TheMovies.ViewModels
             _movieList.Add(movie);
 
             _repository.SaveMovie(_movieList.ToList());
+            Succesbesked = "Filmen er registreret";
+        }
+
+        private bool KanRegistrereFilm()
+        {
+            return !string.IsNullOrWhiteSpace(Titel) &&
+                   int.TryParse(VarighedInput, out int varighed) &&
+                   varighed > 0 &&
+                   !string.IsNullOrWhiteSpace(Genre);
         }
 
         public void SletFilm()
         {
             if (SelectedMovie != null)
             {
+                if (System.Windows.MessageBox.Show(
+                    "Vil du slette den valgte film?",
+                    "Bekræft sletning",
+                    System.Windows.MessageBoxButton.YesNo) !=
+                    System.Windows.MessageBoxResult.Yes) return;
                 _movieList.Remove(SelectedMovie);
                 _repository.SaveMovie(_movieList.ToList());
             }
+        }
+
+        private void GemFilm()
+        {
+            SelectedMovie.Titel = Titel;
+            SelectedMovie.Varighed = int.Parse(VarighedInput);
+            SelectedMovie.Genre = Genre;
+            SelectedMovie.Instruktøer = Instruktøer;
+            SelectedMovie.Premieredato = Premieredato;
+            _repository.SaveMovie(_movieList.ToList());
+            MovieView.Refresh();
+            Succesbesked = "Ændringerne er gemt";
         }
     }
 }

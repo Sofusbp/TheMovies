@@ -13,6 +13,7 @@ namespace TheMovies.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public ICommand RegistrerCommand { get; }
+        public ICommand SletCommand { get; }
 
         private FileScreeningRepository _repository;
         private FileMovieRepository _movieRepository;
@@ -26,8 +27,15 @@ namespace TheMovies.ViewModels
         private Movie _selectedMovie;
         private Cinema _selectedCinema;
         private CinemaRoom _selectedRoom;
+        private Screening _selectedScreening;
 
         private DateTime _startTidspunkt;
+        private DateTime _dato;
+        private string _tidInput = "18:00";
+        private string _beregnetSluttid = "";
+        private string _fejlbesked = "";
+        private string _succesbesked = "";
+        private string _soegeTekst = "";
 
         public ScreeningViewModel()
         {
@@ -39,6 +47,9 @@ namespace TheMovies.ViewModels
             _repository.LoadScreenings()
             .OrderBy(screening => screening.StartTidspunkt));
 
+            ScreeningView = System.Windows.Data.CollectionViewSource.GetDefaultView(_screeningList);
+            ScreeningView.Filter = FiltrerForestillinger;
+
             _movieList = new ObservableCollection<Movie>(
                 _movieRepository.LoadMovies());
 
@@ -48,9 +59,17 @@ namespace TheMovies.ViewModels
             _roomList = new ObservableCollection<CinemaRoom>();
 
             _startTidspunkt = DateTime.Today.AddHours(18);
+            _dato = DateTime.Today;
 
             RegistrerCommand = new RelayCommand(
-                parameter => RegistrerForestilling());
+                parameter => RegistrerForestilling(),
+                parameter => SelectedMovie != null &&
+                             SelectedCinema != null &&
+                             SelectedRoom != null &&
+                             TimeSpan.TryParse(TidInput, out _));
+            SletCommand = new RelayCommand(
+                parameter => SletForestilling(),
+                parameter => SelectedScreening != null);
         }
 
 
@@ -85,6 +104,7 @@ namespace TheMovies.ViewModels
             set
             {
                 _selectedMovie = value;
+                OpdaterBeregnetSluttid();
 
                 PropertyChanged?.Invoke(
                     this,
@@ -150,24 +170,85 @@ namespace TheMovies.ViewModels
                     new PropertyChangedEventArgs("StartTidspunkt"));
             }
         }
+        public Screening SelectedScreening
+        {
+            get { return _selectedScreening; }
+            set { _selectedScreening = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedScreening")); }
+        }
+        public System.ComponentModel.ICollectionView ScreeningView { get; }
+
+        public string SoegeTekst
+        {
+            get { return _soegeTekst; }
+            set { _soegeTekst = value; ScreeningView.Refresh(); PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SoegeTekst")); }
+        }
+
+        private bool FiltrerForestillinger(object item)
+        {
+            Screening screening = (Screening)item;
+            return string.IsNullOrWhiteSpace(SoegeTekst) ||
+                   screening.Film.Titel.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase) ||
+                   screening.Biograf.Navn.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public DateTime Dato
+        {
+            get { return _dato; }
+            set { _dato = value; OpdaterStarttidspunkt(); PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Dato")); }
+        }
+
+        public string TidInput
+        {
+            get { return _tidInput; }
+            set { _tidInput = value; OpdaterStarttidspunkt(); PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TidInput")); }
+        }
+
+        public string BeregnetSluttid
+        {
+            get { return _beregnetSluttid; }
+            set { _beregnetSluttid = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("BeregnetSluttid")); }
+        }
+
+        public string Fejlbesked
+        {
+            get { return _fejlbesked; }
+            set { _fejlbesked = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Fejlbesked")); }
+        }
+
+        public string Succesbesked
+        {
+            get { return _succesbesked; }
+            set { _succesbesked = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Succesbesked")); }
+        }
 
 
         public void RegistrerForestilling()
         {
             if (SelectedMovie == null)
             {
+                Fejlbesked = "Vælg en film";
                 return;
             }
 
             if (SelectedCinema == null)
             {
+                Fejlbesked = "Vælg en biograf";
                 return;
             }
 
             if (SelectedRoom == null)
             {
+                Fejlbesked = "Vælg en sal";
                 return;
             }
+
+            if (!TimeSpan.TryParse(TidInput, out TimeSpan tid))
+            {
+                Fejlbesked = "Indtast tidspunktet som f.eks. 18:30";
+                return;
+            }
+
+            StartTidspunkt = Dato.Date.Add(tid);
 
             DateTime slutTidspunkt = StartTidspunkt
                 .AddMinutes(SelectedMovie.Varighed)
@@ -183,6 +264,7 @@ namespace TheMovies.ViewModels
 
             if (overlap)
             {
+                Fejlbesked = "Salen er allerede optaget på dette tidspunkt";
                 return;
             }
 
@@ -209,6 +291,46 @@ namespace TheMovies.ViewModels
 
             _repository.SaveScreenings(
                 _screeningList.ToList());
+            Fejlbesked = "";
+            Succesbesked = "Forestillingen er registreret";
+        }
+
+        private void OpdaterStarttidspunkt()
+        {
+            if (TimeSpan.TryParse(TidInput, out TimeSpan tid))
+            {
+                StartTidspunkt = Dato.Date.Add(tid);
+                OpdaterBeregnetSluttid();
+            }
+            else
+            {
+                BeregnetSluttid = "";
+            }
+        }
+
+        private void OpdaterBeregnetSluttid()
+        {
+            if (SelectedMovie == null)
+            {
+                BeregnetSluttid = "";
+                return;
+            }
+
+            DateTime slut = StartTidspunkt
+                .AddMinutes(SelectedMovie.Varighed + 30);
+            BeregnetSluttid = $"Forventet sluttid: {slut:HH:mm} (inkl. reklamer og rengøring)";
+        }
+
+        private void SletForestilling()
+        {
+            if (System.Windows.MessageBox.Show(
+                "Vil du slette den valgte forestilling?",
+                "Bekræft sletning",
+                System.Windows.MessageBoxButton.YesNo) !=
+                System.Windows.MessageBoxResult.Yes) return;
+            _screeningList.Remove(SelectedScreening);
+            _repository.SaveScreenings(_screeningList.ToList());
+            Succesbesked = "Forestillingen er slettet";
         }
     }
 }

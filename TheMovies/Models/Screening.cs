@@ -21,5 +21,9 @@ namespace TheMovies.Models
 
         public DateTime SlutTidspunkt
         { get; set; }
+
+        [System.Text.Json.Serialization.JsonIgnore]
+        public int LedigePladser
+        { get; set; }
     }
 }

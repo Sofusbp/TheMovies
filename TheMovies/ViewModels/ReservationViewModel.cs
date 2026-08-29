@@ -12,6 +12,7 @@ namespace TheMovies.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public ICommand RegistrerCommand { get; }
+        public ICommand AnnullerCommand { get; }
 
         private FileReservationRepository _reservationRepository;
         private FileScreeningRepository _screeningRepository;
@@ -20,10 +21,13 @@ namespace TheMovies.ViewModels
         private ObservableCollection<Screening> _screeningList;
 
         private Screening _selectedScreening;
+        private Reservation _selectedReservation;
         private string _antalBilletterInput;
         private string _email;
         private string _telefonnummer;
         private string _fejlbesked;
+        private string _succesbesked = "";
+        private string _soegeTekst = "";
 
         public ReservationViewModel()
             : this(new FileReservationRepository())
@@ -39,11 +43,24 @@ namespace TheMovies.ViewModels
             _reservationList = new ObservableCollection<Reservation>(
                 _reservationRepository.LoadReservations());
 
+            ReservationView = System.Windows.Data.CollectionViewSource.GetDefaultView(_reservationList);
+            ReservationView.Filter = FiltrerReservationer;
+
             _screeningList = new ObservableCollection<Screening>(
                 _screeningRepository.LoadScreenings());
 
+            OpdaterLedigePladser();
+
             RegistrerCommand = new RelayCommand(
-                parameter => RegistrerReservation());
+                parameter => RegistrerReservation(),
+                parameter => SelectedScreening != null &&
+                             int.TryParse(AntalBilletterInput, out int antal) &&
+                             antal > 0 &&
+                             !string.IsNullOrWhiteSpace(Email) &&
+                             !string.IsNullOrWhiteSpace(Telefonnummer));
+            AnnullerCommand = new RelayCommand(
+                parameter => AnnullerReservation(),
+                parameter => SelectedReservation != null);
         }
 
         public ObservableCollection<Reservation> ReservationList
@@ -119,6 +136,33 @@ namespace TheMovies.ViewModels
                     this,
                     new PropertyChangedEventArgs("Fejlbesked"));
             }
+        }
+        public Reservation SelectedReservation
+        {
+            get { return _selectedReservation; }
+            set { _selectedReservation = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedReservation")); }
+        }
+        public System.ComponentModel.ICollectionView ReservationView { get; }
+
+        public string SoegeTekst
+        {
+            get { return _soegeTekst; }
+            set { _soegeTekst = value; ReservationView.Refresh(); PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SoegeTekst")); }
+        }
+
+        private bool FiltrerReservationer(object item)
+        {
+            Reservation reservation = (Reservation)item;
+            return string.IsNullOrWhiteSpace(SoegeTekst) ||
+                   reservation.Forestilling.Film.Titel.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase) ||
+                   reservation.Email.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase) ||
+                   reservation.Telefonnummer.Contains(SoegeTekst, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public string Succesbesked
+        {
+            get { return _succesbesked; }
+            set { _succesbesked = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Succesbesked")); }
         }
 
         public bool ValiderInput(out int antalBilletter)
@@ -234,9 +278,13 @@ namespace TheMovies.ViewModels
             _reservationRepository.SaveReservations(
                 _reservationList.ToList());
 
+            OpdaterLedigePladser();
+
             AntalBilletterInput = "";
             Email = "";
             Telefonnummer = "";
+            Fejlbesked = "";
+            Succesbesked = "Reservationen er gemt";
         }
 
         private void OpdaterReservationerFraFil()
@@ -250,6 +298,37 @@ namespace TheMovies.ViewModels
             {
                 _reservationList.Add(reservation);
             }
+        }
+
+        private void OpdaterLedigePladser()
+        {
+            foreach (Screening screening in _screeningList)
+            {
+                int reserveredeBilletter = _reservationList
+                    .Where(reservation =>
+                        ErSammeForestilling(reservation.Forestilling, screening))
+                    .Sum(reservation => reservation.AntalBilletter);
+
+                screening.LedigePladser =
+                    Math.Max(0, screening.Sal.Kapacitet - reserveredeBilletter);
+            }
+
+            PropertyChanged?.Invoke(
+                this,
+                new PropertyChangedEventArgs("ScreeningList"));
+        }
+
+        private void AnnullerReservation()
+        {
+            if (System.Windows.MessageBox.Show(
+                "Vil du annullere den valgte reservation?",
+                "Bekræft annullering",
+                System.Windows.MessageBoxButton.YesNo) !=
+                System.Windows.MessageBoxResult.Yes) return;
+            _reservationList.Remove(SelectedReservation);
+            _reservationRepository.SaveReservations(_reservationList.ToList());
+            OpdaterLedigePladser();
+            Succesbesked = "Reservationen er annulleret";
         }
     }
 }
