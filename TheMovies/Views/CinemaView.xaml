@@ -73,6 +73,12 @@
 
             </ListBox>
 
+            <Button Content="Slet valgt biograf"
+                    Command="{Binding SletBiografCommand}"
+                    Width="160"
+                    HorizontalAlignment="Center"
+                    Margin="0,12,0,8"/>
+
             <TextBlock Text="Ingen biografer er oprettet endnu. Opret en biograf, før du tilføjer sale.">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource EmptyStateStyle}">

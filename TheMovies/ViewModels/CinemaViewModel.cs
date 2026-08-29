@@ -13,6 +13,7 @@ namespace TheMovies.ViewModels
 
         public ICommand OpretBiografCommand { get; }
         public ICommand OpretSalCommand { get; }
+        public ICommand SletBiografCommand { get; }
 
         private FileCinemaRepository _repository;
 
@@ -42,6 +43,9 @@ namespace TheMovies.ViewModels
                 new RelayCommand(
                     parameter => OpretSal(),
                     parameter => KanOpretSal());
+            SletBiografCommand = new RelayCommand(
+                parameter => SletBiograf(),
+                parameter => SelectedCinema != null);
         }
 
         public ObservableCollection<Cinema> CinemaList
@@ -188,6 +192,18 @@ namespace TheMovies.ViewModels
             return SelectedCinema != null &&
                    int.TryParse(NummerInput, out int nummer) && nummer > 0 &&
                    int.TryParse(KapacitetInput, out int kapacitet) && kapacitet > 0;
+        }
+
+        private void SletBiograf()
+        {
+            if (System.Windows.MessageBox.Show(
+                "Vil du slette biografen og dens sale?",
+                "Bekræft sletning",
+                System.Windows.MessageBoxButton.YesNo) !=
+                System.Windows.MessageBoxResult.Yes) return;
+            _cinemaList.Remove(SelectedCinema);
+            _repository.SaveCinemas(_cinemaList.ToList());
+            Succesbesked = "Biografen er slettet";
         }
     }
 }

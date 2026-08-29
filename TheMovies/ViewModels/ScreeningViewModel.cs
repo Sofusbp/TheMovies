@@ -13,6 +13,7 @@ namespace TheMovies.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public ICommand RegistrerCommand { get; }
+        public ICommand SletCommand { get; }
 
         private FileScreeningRepository _repository;
         private FileMovieRepository _movieRepository;
@@ -26,6 +27,7 @@ namespace TheMovies.ViewModels
         private Movie _selectedMovie;
         private Cinema _selectedCinema;
         private CinemaRoom _selectedRoom;
+        private Screening _selectedScreening;
 
         private DateTime _startTidspunkt;
         private DateTime _dato;
@@ -65,6 +67,9 @@ namespace TheMovies.ViewModels
                              SelectedCinema != null &&
                              SelectedRoom != null &&
                              TimeSpan.TryParse(TidInput, out _));
+            SletCommand = new RelayCommand(
+                parameter => SletForestilling(),
+                parameter => SelectedScreening != null);
         }
 
 
@@ -164,6 +169,11 @@ namespace TheMovies.ViewModels
                     this,
                     new PropertyChangedEventArgs("StartTidspunkt"));
             }
+        }
+        public Screening SelectedScreening
+        {
+            get { return _selectedScreening; }
+            set { _selectedScreening = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedScreening")); }
         }
         public System.ComponentModel.ICollectionView ScreeningView { get; }
 
@@ -309,6 +319,18 @@ namespace TheMovies.ViewModels
             DateTime slut = StartTidspunkt
                 .AddMinutes(SelectedMovie.Varighed + 30);
             BeregnetSluttid = $"Forventet sluttid: {slut:HH:mm} (inkl. reklamer og rengøring)";
+        }
+
+        private void SletForestilling()
+        {
+            if (System.Windows.MessageBox.Show(
+                "Vil du slette den valgte forestilling?",
+                "Bekræft sletning",
+                System.Windows.MessageBoxButton.YesNo) !=
+                System.Windows.MessageBoxResult.Yes) return;
+            _screeningList.Remove(SelectedScreening);
+            _repository.SaveScreenings(_screeningList.ToList());
+            Succesbesked = "Forestillingen er slettet";
         }
     }
 }

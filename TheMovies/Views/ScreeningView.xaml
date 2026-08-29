@@ -71,6 +71,7 @@
 
 
             <DataGrid ItemsSource="{Binding ScreeningView}"
+                      SelectedItem="{Binding SelectedScreening}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
                       CanUserAddRows="False"
@@ -83,6 +84,12 @@
                     <DataGridTextColumn Header="Slut" Binding="{Binding SlutTidspunkt, StringFormat=dd/MM/yyyy HH:mm}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
+
+            <Button Content="Slet valgt forestilling"
+                    Command="{Binding SletCommand}"
+                    Width="180"
+                    HorizontalAlignment="Center"
+                    Margin="0,12,0,8"/>
 
             <TextBlock Text="Ingen forestillinger er oprettet endnu. Opret først en film, biograf og sal.">
                 <TextBlock.Style>

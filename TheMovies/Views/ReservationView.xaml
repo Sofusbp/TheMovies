@@ -82,6 +82,7 @@
                      ToolTip="Søg efter film, email eller telefon"/>
 
             <DataGrid ItemsSource="{Binding ReservationView}"
+                      SelectedItem="{Binding SelectedReservation}"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
                       CanUserAddRows="False"
@@ -96,6 +97,12 @@
                     <DataGridTextColumn Header="Telefon" Binding="{Binding Telefonnummer}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
+
+            <Button Content="Annuller valgt reservation"
+                    Command="{Binding AnnullerCommand}"
+                    Width="210"
+                    HorizontalAlignment="Center"
+                    Margin="0,12,0,8"/>
 
             <TextBlock Text="Ingen reservationer endnu. Vælg en forestilling og registrer kundens billetter.">
                 <TextBlock.Style>

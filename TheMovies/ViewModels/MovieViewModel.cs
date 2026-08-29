@@ -18,6 +18,7 @@ namespace TheMovies.ViewModels
 
         public ICommand RegistrerCommand { get; }
         public ICommand SletCommand { get; }
+        public ICommand GemCommand { get; }
 
         private FileMovieRepository _repository;
         private Movie _selectedMovie;
@@ -151,6 +152,9 @@ namespace TheMovies.ViewModels
             SletCommand = new RelayCommand(
                 parameter => SletFilm(),
                 parameter => SelectedMovie != null);
+            GemCommand = new RelayCommand(
+                parameter => GemFilm(),
+                parameter => SelectedMovie != null && KanRegistrereFilm());
         }
 
 
@@ -177,6 +181,14 @@ namespace TheMovies.ViewModels
             set
             {
                 _selectedMovie = value;
+                if (value != null)
+                {
+                    Titel = value.Titel;
+                    VarighedInput = value.Varighed.ToString();
+                    Genre = value.Genre;
+                    Instruktøer = value.Instruktøer;
+                    Premieredato = value.Premieredato;
+                }
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedMovie"));
             }
         }
@@ -275,9 +287,26 @@ namespace TheMovies.ViewModels
         {
             if (SelectedMovie != null)
             {
+                if (System.Windows.MessageBox.Show(
+                    "Vil du slette den valgte film?",
+                    "Bekræft sletning",
+                    System.Windows.MessageBoxButton.YesNo) !=
+                    System.Windows.MessageBoxResult.Yes) return;
                 _movieList.Remove(SelectedMovie);
                 _repository.SaveMovie(_movieList.ToList());
             }
+        }
+
+        private void GemFilm()
+        {
+            SelectedMovie.Titel = Titel;
+            SelectedMovie.Varighed = int.Parse(VarighedInput);
+            SelectedMovie.Genre = Genre;
+            SelectedMovie.Instruktøer = Instruktøer;
+            SelectedMovie.Premieredato = Premieredato;
+            _repository.SaveMovie(_movieList.ToList());
+            MovieView.Refresh();
+            Succesbesked = "Ændringerne er gemt";
         }
     }
 }

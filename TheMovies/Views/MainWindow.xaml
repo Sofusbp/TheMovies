@@ -159,6 +159,12 @@
                     HorizontalAlignment="Center"
                     Margin="0,15,0,15"/>
 
+            <Button Content="Gem ændringer"
+                    Command="{Binding GemCommand}"
+                    Width="140"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,12"/>
+
             <TextBlock Text="{Binding Succesbesked}"
                        Foreground="#287A3D"
                        Margin="0,0,0,10"/>
@@ -196,7 +202,7 @@
 
 
             <!-- Slet -->
-            <Button Content="Slet"
+            <Button Content="Slet valgt film"
                     Command="{Binding SletCommand}"
                     Height="38"
                     Width="102"

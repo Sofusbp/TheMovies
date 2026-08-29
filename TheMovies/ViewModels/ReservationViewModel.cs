@@ -12,6 +12,7 @@ namespace TheMovies.ViewModels
         public event PropertyChangedEventHandler? PropertyChanged;
 
         public ICommand RegistrerCommand { get; }
+        public ICommand AnnullerCommand { get; }
 
         private FileReservationRepository _reservationRepository;
         private FileScreeningRepository _screeningRepository;
@@ -20,6 +21,7 @@ namespace TheMovies.ViewModels
         private ObservableCollection<Screening> _screeningList;
 
         private Screening _selectedScreening;
+        private Reservation _selectedReservation;
         private string _antalBilletterInput;
         private string _email;
         private string _telefonnummer;
@@ -56,6 +58,9 @@ namespace TheMovies.ViewModels
                              antal > 0 &&
                              !string.IsNullOrWhiteSpace(Email) &&
                              !string.IsNullOrWhiteSpace(Telefonnummer));
+            AnnullerCommand = new RelayCommand(
+                parameter => AnnullerReservation(),
+                parameter => SelectedReservation != null);
         }
 
         public ObservableCollection<Reservation> ReservationList
@@ -131,6 +136,11 @@ namespace TheMovies.ViewModels
                     this,
                     new PropertyChangedEventArgs("Fejlbesked"));
             }
+        }
+        public Reservation SelectedReservation
+        {
+            get { return _selectedReservation; }
+            set { _selectedReservation = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedReservation")); }
         }
         public System.ComponentModel.ICollectionView ReservationView { get; }
 
@@ -306,6 +316,19 @@ namespace TheMovies.ViewModels
             PropertyChanged?.Invoke(
                 this,
                 new PropertyChangedEventArgs("ScreeningList"));
+        }
+
+        private void AnnullerReservation()
+        {
+            if (System.Windows.MessageBox.Show(
+                "Vil du annullere den valgte reservation?",
+                "Bekræft annullering",
+                System.Windows.MessageBoxButton.YesNo) !=
+                System.Windows.MessageBoxResult.Yes) return;
+            _reservationList.Remove(SelectedReservation);
+            _reservationRepository.SaveReservations(_reservationList.ToList());
+            OpdaterLedigePladser();
+            Succesbesked = "Reservationen er annulleret";
         }
     }
 }
