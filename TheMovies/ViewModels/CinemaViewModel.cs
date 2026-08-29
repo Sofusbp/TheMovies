@@ -34,10 +34,14 @@ namespace TheMovies.ViewModels
                 _repository.LoadCinemas());
 
             OpretBiografCommand =
-                new RelayCommand(parameter => OpretBiograf());
+                new RelayCommand(
+                    parameter => OpretBiograf(),
+                    parameter => !string.IsNullOrWhiteSpace(Navn));
 
             OpretSalCommand =
-                new RelayCommand(parameter => OpretSal());
+                new RelayCommand(
+                    parameter => OpretSal(),
+                    parameter => KanOpretSal());
         }
 
         public ObservableCollection<Cinema> CinemaList
@@ -177,6 +181,13 @@ namespace TheMovies.ViewModels
             KapacitetInput = "";
             Fejlbesked = "";
             Succesbesked = "Salen er oprettet";
+        }
+
+        private bool KanOpretSal()
+        {
+            return SelectedCinema != null &&
+                   int.TryParse(NummerInput, out int nummer) && nummer > 0 &&
+                   int.TryParse(KapacitetInput, out int kapacitet) && kapacitet > 0;
         }
     }
 }

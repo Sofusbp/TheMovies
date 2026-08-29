@@ -56,7 +56,11 @@ namespace TheMovies.ViewModels
             _dato = DateTime.Today;
 
             RegistrerCommand = new RelayCommand(
-                parameter => RegistrerForestilling());
+                parameter => RegistrerForestilling(),
+                parameter => SelectedMovie != null &&
+                             SelectedCinema != null &&
+                             SelectedRoom != null &&
+                             TimeSpan.TryParse(TidInput, out _));
         }
 
 

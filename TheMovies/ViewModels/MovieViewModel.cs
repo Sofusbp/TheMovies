@@ -141,8 +141,12 @@ namespace TheMovies.ViewModels
                 _movieList.Add(movie);
             }
 
-            RegistrerCommand = new RelayCommand(Parameter => RegistrerFilm());
-            SletCommand = new RelayCommand(Parameter => SletFilm());
+            RegistrerCommand = new RelayCommand(
+                parameter => RegistrerFilm(),
+                parameter => KanRegistrereFilm());
+            SletCommand = new RelayCommand(
+                parameter => SletFilm(),
+                parameter => SelectedMovie != null);
         }
 
 
@@ -238,6 +242,14 @@ namespace TheMovies.ViewModels
 
             _repository.SaveMovie(_movieList.ToList());
             Succesbesked = "Filmen er registreret";
+        }
+
+        private bool KanRegistrereFilm()
+        {
+            return !string.IsNullOrWhiteSpace(Titel) &&
+                   int.TryParse(VarighedInput, out int varighed) &&
+                   varighed > 0 &&
+                   !string.IsNullOrWhiteSpace(Genre);
         }
 
         public void SletFilm()

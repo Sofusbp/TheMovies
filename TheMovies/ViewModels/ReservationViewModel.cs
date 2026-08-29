@@ -46,7 +46,12 @@ namespace TheMovies.ViewModels
             OpdaterLedigePladser();
 
             RegistrerCommand = new RelayCommand(
-                parameter => RegistrerReservation());
+                parameter => RegistrerReservation(),
+                parameter => SelectedScreening != null &&
+                             int.TryParse(AntalBilletterInput, out int antal) &&
+                             antal > 0 &&
+                             !string.IsNullOrWhiteSpace(Email) &&
+                             !string.IsNullOrWhiteSpace(Telefonnummer));
         }
 
         public ObservableCollection<Reservation> ReservationList
