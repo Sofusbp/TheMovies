@@ -187,6 +187,7 @@ namespace TheMovies.ViewModels
             Screening screening = new Screening();
 
             screening.Film = SelectedMovie;
+            screening.Biograf = SelectedCinema;
             screening.Sal = SelectedRoom;
             screening.StartTidspunkt = StartTidspunkt;
             screening.SlutTidspunkt = slutTidspunkt;

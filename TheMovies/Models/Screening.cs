@@ -7,6 +7,9 @@ namespace TheMovies.Models
         public Movie Film
         { get; set; }
 
+        public Cinema Biograf
+        { get; set; }
+
         public CinemaRoom Sal
         { get; set; }
 
