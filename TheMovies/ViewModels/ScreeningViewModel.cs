@@ -175,6 +175,8 @@ namespace TheMovies.ViewModels
                 .AddMinutes(15);
 
             bool overlap = _screeningList.Any(screening =>
+                (screening.Biograf == null ||
+                 screening.Biograf.Navn == SelectedCinema.Navn) &&
                 screening.Sal.Nummer == SelectedRoom.Nummer &&
                 StartTidspunkt < screening.SlutTidspunkt &&
                 slutTidspunkt > screening.StartTidspunkt);
