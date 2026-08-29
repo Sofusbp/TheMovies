@@ -26,8 +26,14 @@ namespace TheMovies.ViewModels
         private string _fejlbesked;
 
         public ReservationViewModel()
+            : this(new FileReservationRepository())
         {
-            _reservationRepository = new FileReservationRepository();
+        }
+
+        public ReservationViewModel(
+            FileReservationRepository reservationRepository)
+        {
+            _reservationRepository = reservationRepository;
             _screeningRepository = new FileScreeningRepository();
 
             _reservationList = new ObservableCollection<Reservation>(
@@ -169,7 +175,9 @@ namespace TheMovies.ViewModels
 
             int reserveredeBilletter = _reservationList
                 .Where(reservation =>
-                    reservation.Forestilling.Id == SelectedScreening.Id)
+                    ErSammeForestilling(
+                        reservation.Forestilling,
+                        SelectedScreening))
                 .Sum(reservation => reservation.AntalBilletter);
 
             int ledigeBilletter =
@@ -185,12 +193,29 @@ namespace TheMovies.ViewModels
             return true;
         }
 
+        private bool ErSammeForestilling(
+            Screening gemtForestilling,
+            Screening valgtForestilling)
+        {
+            if (gemtForestilling.Id == valgtForestilling.Id)
+            {
+                return true;
+            }
+
+            return gemtForestilling.Film.Titel == valgtForestilling.Film.Titel &&
+                   gemtForestilling.Biograf.Navn == valgtForestilling.Biograf.Navn &&
+                   gemtForestilling.Sal.Nummer == valgtForestilling.Sal.Nummer &&
+                   gemtForestilling.StartTidspunkt == valgtForestilling.StartTidspunkt;
+        }
+
         public void RegistrerReservation()
         {
             if (!ValiderInput(out int antalBilletter))
             {
                 return;
             }
+
+            OpdaterReservationerFraFil();
 
             if (!ValiderKapacitet(antalBilletter))
             {
@@ -212,6 +237,19 @@ namespace TheMovies.ViewModels
             AntalBilletterInput = "";
             Email = "";
             Telefonnummer = "";
+        }
+
+        private void OpdaterReservationerFraFil()
+        {
+            List<Reservation> gemteReservationer =
+                _reservationRepository.LoadReservations();
+
+            _reservationList.Clear();
+
+            foreach (Reservation reservation in gemteReservationer)
+            {
+                _reservationList.Add(reservation);
+            }
         }
     }
 }
