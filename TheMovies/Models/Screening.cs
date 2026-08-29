@@ -4,6 +4,9 @@ namespace TheMovies.Models
 {
     public class Screening
     {
+        public Guid Id
+        { get; set; } = Guid.NewGuid();
+
         public Movie Film
         { get; set; }
 
