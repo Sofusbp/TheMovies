@@ -1,4 +1,6 @@
+using System.IO;
 using TheMovies.Models;
+using TheMovies.Repositories;
 using TheMovies.ViewModels;
 
 namespace TheMovies.Tests
@@ -79,6 +81,58 @@ namespace TheMovies.Tests
             Assert.NotEqual(valgtForestilling.Id, gemtForestilling.Id);
             Assert.False(resultat);
             Assert.Equal("Der er kun 3 ledige billetter", viewModel.Fejlbesked);
+        }
+
+        [Fact]
+        public void RegistrerReservation_GenindlaeserReservationerFoerKapacitetskontrol()
+        {
+            // Arrange
+            string filsti = Path.Combine(
+                Path.GetTempPath(),
+                $"reservation-test-{Guid.NewGuid()}.json");
+
+            try
+            {
+                FileReservationRepository repository =
+                    new FileReservationRepository(filsti);
+
+                Screening forestilling = OpretForestilling(10);
+                ReservationViewModel viewModel =
+                    new ReservationViewModel(repository)
+                    {
+                        SelectedScreening = forestilling,
+                        AntalBilletterInput = "4",
+                        Email = "ny@example.com",
+                        Telefonnummer = "87654321"
+                    };
+
+                repository.SaveReservations(new List<Reservation>
+                {
+                    new Reservation
+                    {
+                        Forestilling = forestilling,
+                        AntalBilletter = 7,
+                        Email = "kunde@example.com",
+                        Telefonnummer = "12345678"
+                    }
+                });
+
+                // Act
+                viewModel.RegistrerReservation();
+
+                // Assert
+                Assert.Equal(
+                    "Der er kun 3 ledige billetter",
+                    viewModel.Fejlbesked);
+                Assert.Single(repository.LoadReservations());
+            }
+            finally
+            {
+                if (File.Exists(filsti))
+                {
+                    File.Delete(filsti);
+                }
+            }
         }
 
         private static Screening OpretForestilling(int kapacitet)

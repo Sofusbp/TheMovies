@@ -26,8 +26,14 @@ namespace TheMovies.ViewModels
         private string _fejlbesked;
 
         public ReservationViewModel()
+            : this(new FileReservationRepository())
         {
-            _reservationRepository = new FileReservationRepository();
+        }
+
+        public ReservationViewModel(
+            FileReservationRepository reservationRepository)
+        {
+            _reservationRepository = reservationRepository;
             _screeningRepository = new FileScreeningRepository();
 
             _reservationList = new ObservableCollection<Reservation>(
@@ -209,6 +215,8 @@ namespace TheMovies.ViewModels
                 return;
             }
 
+            OpdaterReservationerFraFil();
+
             if (!ValiderKapacitet(antalBilletter))
             {
                 return;
@@ -229,6 +237,19 @@ namespace TheMovies.ViewModels
             AntalBilletterInput = "";
             Email = "";
             Telefonnummer = "";
+        }
+
+        private void OpdaterReservationerFraFil()
+        {
+            List<Reservation> gemteReservationer =
+                _reservationRepository.LoadReservations();
+
+            _reservationList.Clear();
+
+            foreach (Reservation reservation in gemteReservationer)
+            {
+                _reservationList.Add(reservation);
+            }
         }
     }
 }

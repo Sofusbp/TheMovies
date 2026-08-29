@@ -7,7 +7,13 @@ namespace TheMovies.Repositories
 {
     public class FileReservationRepository
     {
-        private string _fileName = "reservations.json";
+        private string _fileName;
+
+        public FileReservationRepository(
+            string fileName = "reservations.json")
+        {
+            _fileName = fileName;
+        }
 
         public List<Reservation> LoadReservations()
         {
