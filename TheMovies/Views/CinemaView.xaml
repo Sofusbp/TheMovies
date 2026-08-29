@@ -48,8 +48,15 @@
 
                                     <DataTemplate>
 
-                                        <TextBlock Text="{Binding Nummer,
-                                                          StringFormat='Sal {0}'}"/>
+                                        <StackPanel Orientation="Horizontal">
+
+                                            <TextBlock Text="{Binding Nummer,
+                                                              StringFormat='Sal {0}'}"/>
+
+                                            <TextBlock Text="{Binding Kapacitet,
+                                                              StringFormat=' – kapacitet: {0}'}"/>
+
+                                        </StackPanel>
 
                                     </DataTemplate>
 
@@ -69,6 +76,11 @@
                        Margin="0,15,0,0"/>
 
             <TextBox Text="{Binding NummerInput, UpdateSourceTrigger=PropertyChanged}"
+                     Margin="0,0,0,10"/>
+
+            <TextBlock Text="Kapacitet:"/>
+
+            <TextBox Text="{Binding KapacitetInput, UpdateSourceTrigger=PropertyChanged}"
                      Margin="0,0,0,10"/>
 
             <Button Content="Opret sal"
