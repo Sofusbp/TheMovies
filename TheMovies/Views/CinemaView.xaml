@@ -3,9 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         MinHeight="500">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalContentAlignment="Stretch">
 
-        <StackPanel Margin="20">
+        <StackPanel Margin="20"
+                    HorizontalAlignment="Stretch">
 
             <TextBlock Text="Biografer og sale"
                        Style="{StaticResource PageTitleStyle}"/>
