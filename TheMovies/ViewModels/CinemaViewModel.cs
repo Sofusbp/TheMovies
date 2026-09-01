@@ -26,6 +26,7 @@ namespace TheMovies.ViewModels
         private Cinema _selectedCinema;
 
         private ObservableCollection<Cinema> _cinemaList;
+        private ObservableCollection<CinemaRoomOverview> _cinemaRoomList;
 
         public CinemaViewModel()
         {
@@ -33,6 +34,8 @@ namespace TheMovies.ViewModels
 
             _cinemaList = new ObservableCollection<Cinema>(
                 _repository.LoadCinemas());
+            _cinemaRoomList = new ObservableCollection<CinemaRoomOverview>();
+            OpdaterCinemaRoomList();
 
             OpretBiografCommand =
                 new RelayCommand(
@@ -51,6 +54,11 @@ namespace TheMovies.ViewModels
         public ObservableCollection<Cinema> CinemaList
         {
             get { return _cinemaList; }
+        }
+
+        public ObservableCollection<CinemaRoomOverview> CinemaRoomList
+        {
+            get { return _cinemaRoomList; }
         }
 
         public string Navn
@@ -178,6 +186,8 @@ namespace TheMovies.ViewModels
 
             SelectedCinema.Sale.Add(room);
 
+            OpdaterCinemaRoomList();
+
             _repository.SaveCinemas(
                 _cinemaList.ToList());
 
@@ -202,8 +212,34 @@ namespace TheMovies.ViewModels
                 System.Windows.MessageBoxButton.YesNo) !=
                 System.Windows.MessageBoxResult.Yes) return;
             _cinemaList.Remove(SelectedCinema);
+            OpdaterCinemaRoomList();
             _repository.SaveCinemas(_cinemaList.ToList());
             Succesbesked = "Biografen er slettet";
         }
+
+        private void OpdaterCinemaRoomList()
+        {
+            _cinemaRoomList.Clear();
+
+            foreach (Cinema cinema in _cinemaList)
+            {
+                foreach (CinemaRoom room in cinema.Sale)
+                {
+                    _cinemaRoomList.Add(new CinemaRoomOverview
+                    {
+                        BiografNavn = cinema.Navn,
+                        SalNummer = room.Nummer,
+                        Kapacitet = room.Kapacitet
+                    });
+                }
+            }
+        }
+    }
+
+    public class CinemaRoomOverview
+    {
+        public string BiografNavn { get; set; } = "";
+        public int SalNummer { get; set; }
+        public int Kapacitet { get; set; }
     }
 }

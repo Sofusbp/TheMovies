@@ -29,51 +29,23 @@
             <TextBlock Text="Biografer"
                        Style="{StaticResource SectionTitleStyle}"/>
 
-            <ListBox ItemsSource="{Binding CinemaList}"
-                     SelectedItem="{Binding SelectedCinema}"
-                     Height="150">
+            <TextBlock Text="Vælg biograf:"/>
 
-                <ListBox.ItemTemplate>
+            <ComboBox ItemsSource="{Binding CinemaList}"
+                      SelectedItem="{Binding SelectedCinema}"
+                      DisplayMemberPath="Navn"/>
 
-                    <DataTemplate>
-
-                        <StackPanel Margin="5">
-
-                            <TextBlock Text="{Binding Navn}"
-                                       FontWeight="Bold"/>
-
-                            <TextBlock Text="Sale:"
-                                       Margin="0,5,0,2"/>
-
-                            <ItemsControl ItemsSource="{Binding Sale}">
-
-                                <ItemsControl.ItemTemplate>
-
-                                    <DataTemplate>
-
-                                        <StackPanel Orientation="Horizontal">
-
-                                            <TextBlock Text="{Binding Nummer,
-                                                              StringFormat='Sal {0}'}"/>
-
-                                            <TextBlock Text="{Binding Kapacitet,
-                                                              StringFormat=' – kapacitet: {0}'}"/>
-
-                                        </StackPanel>
-
-                                    </DataTemplate>
-
-                                </ItemsControl.ItemTemplate>
-
-                            </ItemsControl>
-
-                        </StackPanel>
-
-                    </DataTemplate>
-
-                </ListBox.ItemTemplate>
-
-            </ListBox>
+            <DataGrid ItemsSource="{Binding CinemaRoomList}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      MinHeight="190">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Biograf" Binding="{Binding BiografNavn}" Width="2*"/>
+                    <DataGridTextColumn Header="Sal" Binding="{Binding SalNummer}" Width="*"/>
+                    <DataGridTextColumn Header="Kapacitet" Binding="{Binding Kapacitet}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
 
             <Button Content="Slet valgt biograf"
                     Command="{Binding SletBiografCommand}"
