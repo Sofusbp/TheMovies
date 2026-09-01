@@ -88,12 +88,6 @@
                       IsReadOnly="True"
                       CanUserAddRows="False"
                       MinHeight="230">
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="Padding" Value="10,0"/>
-                        <Setter Property="VerticalContentAlignment" Value="Center"/>
-                    </Style>
-                </DataGrid.CellStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Film" Binding="{Binding Forestilling.Film.Titel}" Width="2*"/>
                     <DataGridTextColumn Header="Tid" Binding="{Binding Forestilling.StartTidspunkt, StringFormat=dd/MM/yyyy HH:mm}" Width="*"/>

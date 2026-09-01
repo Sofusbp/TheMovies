@@ -64,6 +64,11 @@
             <Setter Property="HeadersVisibility" Value="Column"/>
         </Style>
 
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
         <Style TargetType="DataGridColumnHeader">
             <Setter Property="Background" Value="#E9EDF5"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
