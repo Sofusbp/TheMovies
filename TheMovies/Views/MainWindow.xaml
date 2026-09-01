@@ -44,14 +44,14 @@
             <TextBlock TextWrapping="Wrap"
                        Text="Titel:"/>
 
-            <Grid>
-                <TextBox Text="{Binding Titel, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Margin="0,0,0,8">
+                <TextBox Text="{Binding Titel, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,4,0,4"/>
 
                 <TextBlock Text="{Binding FejlTitel}"
                            Foreground="Red"
                            IsHitTestVisible="False"
-                           VerticalAlignment="Center"
-                           Margin="5,0,5,0">
+                           Margin="2,0,0,0">
 
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
@@ -69,21 +69,21 @@
                     </TextBlock.Style>
 
                 </TextBlock>
-            </Grid>
+            </StackPanel>
 
 
             <!-- Varighed -->
             <TextBlock TextWrapping="Wrap"
                        Text="Varighed i min.:"/>
 
-            <Grid>
-                <TextBox Text="{Binding VarighedInput, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Margin="0,0,0,8">
+                <TextBox Text="{Binding VarighedInput, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,4,0,4"/>
 
                 <TextBlock Text="{Binding FejlVarighed}"
                            Foreground="Red"
                            IsHitTestVisible="False"
-                           VerticalAlignment="Center"
-                           Margin="5,0,5,0">
+                           Margin="2,0,0,0">
 
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
@@ -115,21 +115,21 @@
                     </TextBlock.Style>
 
                 </TextBlock>
-            </Grid>
+            </StackPanel>
 
 
             <!-- Genre -->
             <TextBlock TextWrapping="Wrap"
                        Text="Genre:"/>
 
-            <Grid>
-                <TextBox Text="{Binding Genre, UpdateSourceTrigger=PropertyChanged}"/>
+            <StackPanel Margin="0,0,0,8">
+                <TextBox Text="{Binding Genre, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,4,0,4"/>
 
                 <TextBlock Text="{Binding FejlGenre}"
                            Foreground="Red"
                            IsHitTestVisible="False"
-                           VerticalAlignment="Center"
-                           Margin="5,0,5,0">
+                           Margin="2,0,0,0">
 
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
@@ -149,7 +149,7 @@
                     </TextBlock.Style>
 
                 </TextBlock>
-            </Grid>
+            </StackPanel>
 
 
             <!-- Instruktør -->
