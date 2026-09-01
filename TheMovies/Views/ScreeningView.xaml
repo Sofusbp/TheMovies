@@ -17,6 +17,7 @@
 
             <ComboBox ItemsSource="{Binding MovieList}"
                       SelectedItem="{Binding SelectedMovie}"
+                      Style="{StaticResource FormComboBoxStyle}"
                       DisplayMemberPath="Titel"
                       Margin="0,0,0,15"/>
 
@@ -25,6 +26,7 @@
 
             <ComboBox ItemsSource="{Binding CinemaList}"
                       SelectedItem="{Binding SelectedCinema}"
+                      Style="{StaticResource FormComboBoxStyle}"
                       DisplayMemberPath="Navn"
                       Margin="0,0,0,15"/>
 
@@ -33,6 +35,7 @@
 
             <ComboBox ItemsSource="{Binding RoomList}"
                       SelectedItem="{Binding SelectedRoom}"
+                      Style="{StaticResource FormComboBoxStyle}"
                       DisplayMemberPath="Nummer"
                       Margin="0,0,0,15"/>
 
@@ -40,12 +43,14 @@
             <TextBlock Text="Dato:"/>
 
             <DatePicker SelectedDate="{Binding Dato}"
+                        Style="{StaticResource FormDatePickerStyle}"
                         Margin="0,0,0,15"/>
 
 
             <TextBlock Text="Starttidspunkt:"/>
 
             <TextBox Text="{Binding TidInput, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource FormTextBoxStyle}"
                      Margin="0,0,0,15"/>
 
             <TextBlock Text="{Binding BeregnetSluttid}"

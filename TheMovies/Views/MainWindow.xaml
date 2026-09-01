@@ -46,6 +46,7 @@
 
             <StackPanel Margin="0,0,0,8">
                 <TextBox Text="{Binding Titel, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource FormTextBoxStyle}"
                          Margin="0,4,0,4"/>
 
                 <TextBlock Text="{Binding FejlTitel}"
@@ -78,6 +79,7 @@
 
             <StackPanel Margin="0,0,0,8">
                 <TextBox Text="{Binding VarighedInput, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource FormTextBoxStyle}"
                          Margin="0,4,0,4"/>
 
                 <TextBlock Text="{Binding FejlVarighed}"
@@ -124,6 +126,7 @@
 
             <StackPanel Margin="0,0,0,8">
                 <TextBox Text="{Binding Genre, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource FormTextBoxStyle}"
                          Margin="0,4,0,4"/>
 
                 <TextBlock Text="{Binding FejlGenre}"
@@ -156,14 +159,16 @@
             <TextBlock TextWrapping="Wrap"
                        Text="Instruktør:"/>
 
-            <TextBox Text="{Binding Instruktøer, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding Instruktøer, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource FormTextBoxStyle}"/>
 
 
             <!-- Premieredato -->
             <TextBlock TextWrapping="Wrap"
                        Text="Premieredato:"/>
 
-            <DatePicker SelectedDate="{Binding Premieredato, UpdateSourceTrigger=PropertyChanged}"/>
+            <DatePicker SelectedDate="{Binding Premieredato, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource FormDatePickerStyle}"/>
 
 
             <!-- Registrer -->

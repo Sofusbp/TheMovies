@@ -17,6 +17,7 @@
             <TextBlock Text="Biografnavn:"/>
 
             <TextBox Text="{Binding Navn, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource FormTextBoxStyle}"
                      Margin="0,0,0,10"/>
 
             <Button Content="Opret biograf"
@@ -33,6 +34,7 @@
 
             <ComboBox ItemsSource="{Binding CinemaList}"
                       SelectedItem="{Binding SelectedCinema}"
+                      Style="{StaticResource FormComboBoxStyle}"
                       DisplayMemberPath="Navn"/>
 
             <DataGrid ItemsSource="{Binding CinemaRoomList}"
@@ -67,11 +69,13 @@
                        Margin="0,15,0,0"/>
 
             <TextBox Text="{Binding NummerInput, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource FormTextBoxStyle}"
                      Margin="0,0,0,10"/>
 
             <TextBlock Text="Kapacitet:"/>
 
             <TextBox Text="{Binding KapacitetInput, UpdateSourceTrigger=PropertyChanged}"
+                     Style="{StaticResource FormTextBoxStyle}"
                      Margin="0,0,0,10"/>
 
             <Button Content="Opret sal"
