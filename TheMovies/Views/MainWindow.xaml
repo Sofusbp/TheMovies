@@ -232,7 +232,9 @@
 
         </TabItem>
 
-        <TabItem Header="Biografer og sale">
+        <TabItem Header="Biografer og sale"
+                 HorizontalContentAlignment="Stretch"
+                 VerticalContentAlignment="Stretch">
             <views:CinemaView/>
         </TabItem>
 
