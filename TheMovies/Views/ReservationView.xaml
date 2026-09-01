@@ -79,6 +79,8 @@
             <TextBlock Text="Registrerede reservationer"
                        Style="{StaticResource SectionTitleStyle}"/>
 
+            <TextBlock Text="Søg i reservationer:"/>
+
             <TextBox Text="{Binding SoegeTekst, UpdateSourceTrigger=PropertyChanged}"
                      ToolTip="Søg efter film, email eller telefon"/>
 

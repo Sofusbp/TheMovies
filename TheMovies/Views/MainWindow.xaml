@@ -189,6 +189,8 @@
             <TextBlock Text="Registrerede film"
                        Style="{StaticResource SectionTitleStyle}"/>
 
+            <TextBlock Text="Søg i film:"/>
+
             <TextBox Text="{Binding SoegeTekst, UpdateSourceTrigger=PropertyChanged}"
                      ToolTip="Søg efter titel eller genre"/>
 

@@ -67,6 +67,8 @@
             <TextBlock Text="Registrerede forestillinger"
                        Style="{StaticResource SectionTitleStyle}"/>
 
+            <TextBlock Text="Søg i forestillinger:"/>
+
             <TextBox Text="{Binding SoegeTekst, UpdateSourceTrigger=PropertyChanged}"
                      ToolTip="Søg efter film eller biograf"/>
 
