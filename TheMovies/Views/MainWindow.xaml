@@ -29,9 +29,11 @@
 
         <TabItem Header="Film">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalContentAlignment="Stretch">
 
-        <StackPanel Margin="28" MaxWidth="900">
+        <StackPanel Margin="28"
+                    HorizontalAlignment="Stretch">
 
             <TextBlock Text="Film"
                        Style="{StaticResource PageTitleStyle}"/>
